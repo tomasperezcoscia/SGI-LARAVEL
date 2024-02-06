@@ -21,27 +21,27 @@
                     <div class="card-body">
                         
                         <div class="form-group">
-                            <strong>Legajo:</strong>
+                            <strong>N° de legajo:</strong>
                             {{ $personal->legajo }}
                         </div>
                         <div class="form-group">
-                            <strong>Nombre:</strong>
+                            <strong>Nombre completo:</strong>
                             {{ $personal->nombre }}
                         </div>
                         <div class="form-group">
-                            <strong>Salario Hora:</strong>
-                            {{ $personal->salario_hora }}
+                            <strong>Salario por hora:</strong>
+                            $ {{ $personal->salario_hora }}
                         </div>
                         <div class="form-group">
-                            <strong>Estado:</strong>
+                            <strong>Estado de empleado:</strong>
                             {{ $personal->estado }}
                         </div>
                         <div class="form-group">
-                            <strong>Fechadealta:</strong>
+                            <strong>Fecha de alta:</strong>
                             {{ $personal->fechaDeAlta }}
                         </div>
                         <div class="form-group">
-                            <strong>Fechadebaja:</strong>
+                            <strong>Fecha de baja:</strong>
                             {{ $personal->fechaDeBaja }}
                         </div>
 
