@@ -47,7 +47,7 @@ class PersonalController extends Controller
 
         $personal = Personal::create($request->all());
 
-        return redirect()->route('personals.index')
+        return redirect()->route('Personal.index')
             ->with('success', 'Personal created successfully.');
     }
 
@@ -90,7 +90,7 @@ class PersonalController extends Controller
 
         $personal->update($request->all());
 
-        return redirect()->route('personals.index')
+        return redirect()->route('Personal.index')
             ->with('success', 'Personal updated successfully');
     }
 
@@ -103,7 +103,7 @@ class PersonalController extends Controller
     {
         $personal = Personal::find($id)->delete();
 
-        return redirect()->route('personals.index')
+        return redirect()->route('Personal.index')
             ->with('success', 'Personal deleted successfully');
     }
 }

@@ -17,7 +17,7 @@
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('horas-personals.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                <a href="{{ route('HorasPersonal.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Create New') }}
                                 </a>
                               </div>
@@ -57,9 +57,9 @@
 											<td>{{ $horasPersonal->tarea_id }}</td>
 
                                             <td>
-                                                <form action="{{ route('horas-personals.destroy',$horasPersonal->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('horas-personals.show',$horasPersonal->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('horas-personals.edit',$horasPersonal->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                <form action="{{ route('HorasPersonal.destroy',$horasPersonal->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('HorasPersonal.show',$horasPersonal->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('HorasPersonal.edit',$horasPersonal->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>

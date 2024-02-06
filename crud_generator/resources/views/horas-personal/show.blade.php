@@ -14,7 +14,7 @@
                             <span class="card-title">{{ __('Show') }} Horas Personal</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('horas-personals.index') }}"> {{ __('Back') }}</a>
+                            <a class="btn btn-primary" href="{{ route('HorasPersonal.index') }}"> {{ __('Back') }}</a>
                         </div>
                     </div>
 

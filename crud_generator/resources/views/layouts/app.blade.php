@@ -74,6 +74,9 @@
                             <a class="nav-link" href="{{ route('AusenciasPersonal.index') }}"> Ausencias Personal </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('HorasPersonal.index') }}"> HorasPersonal </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('OrdenesDeCompra.index') }}"> Ordenes de compra </a>
                         </li>
                         <li class="nav-item">

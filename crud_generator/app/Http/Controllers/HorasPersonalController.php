@@ -47,7 +47,7 @@ class HorasPersonalController extends Controller
 
         $horasPersonal = HorasPersonal::create($request->all());
 
-        return redirect()->route('horas-personals.index')
+        return redirect()->route('HorasPersonal.index')
             ->with('success', 'HorasPersonal created successfully.');
     }
 
@@ -90,7 +90,7 @@ class HorasPersonalController extends Controller
 
         $horasPersonal->update($request->all());
 
-        return redirect()->route('horas-personals.index')
+        return redirect()->route('HorasPersonal.index')
             ->with('success', 'HorasPersonal updated successfully');
     }
 
@@ -103,7 +103,7 @@ class HorasPersonalController extends Controller
     {
         $horasPersonal = HorasPersonal::find($id)->delete();
 
-        return redirect()->route('horas-personals.index')
+        return redirect()->route('HorasPersonal.index')
             ->with('success', 'HorasPersonal deleted successfully');
     }
 }
