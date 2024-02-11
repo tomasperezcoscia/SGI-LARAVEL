@@ -15,13 +15,20 @@
                             <span id="card_title">
                                 {{ __('Tabla de proovedores') }}
                             </span>
-
+                            @if ($proovedores->isEmpty())
+                            <div class="float-right">
+                                <a href="{{ route('Proovedore.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                  {{ __('Agregar Proovedor') }}
+                                </a>
+                              </div>
+                            @else
                              <div class="float-right">
                                 <a href="#" data-toggle="modal" data-target="#ModalCreate"
                                     class="btn btn-primary btn-sm float-right" data-placement="left">
                                     {{ __('Agregar Proovedor') }}
                                 </a>
                               </div>
+                            @endif
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -29,7 +36,6 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
@@ -153,5 +159,8 @@
             </div>
         </div>
     </div>
-    @include('Proovedore.modal.create')
+    
+    @if(!$proovedores->isEmpty())
+        @include('Proovedore.modal.create')
+    @endif
 @endsection

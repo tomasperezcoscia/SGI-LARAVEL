@@ -16,12 +16,20 @@
                                 {{ __('Tabla de personal') }}
                             </span>
 
+                            @if ($personals->isEmpty())
                             <div class="float-right">
+                                <a href="{{ route('Personal.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                  {{ __('Agregar Personal') }}
+                                </a>
+                              </div>
+                            @else
+                             <div class="float-right">
                                 <a href="#" data-toggle="modal" data-target="#ModalCreate"
                                     class="btn btn-primary btn-sm float-right" data-placement="left">
                                     {{ __('Agregar Personal') }}
                                 </a>
-                            </div>
+                              </div>
+                            @endif
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -147,7 +155,7 @@
             </div>
         </div>
     </div>
-
-
-    @include('Personal.modal.create')
+    @if(!$personals->isEmpty())
+        @include('Personal.modal.create')
+    @endif
 @endsection
