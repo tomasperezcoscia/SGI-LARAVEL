@@ -1,6 +1,5 @@
 <div class="modal fade text-left" id="ModalCreate" tabindex="-1">
-    <form method="POST" action="{{ route('Personal.update', $personal->id) }}"  role="form" enctype="multipart/form-data">
-        {{ method_field('PATCH') }}
+    <form method="POST" action="{{ route('Personal.store') }}" role="form" enctype="multipart/form-data">
         @csrf
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -10,7 +9,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Include the form fields here -->
-                    @include('personal.form')
+                    @include('proovedore.form')
                 </div>
                 <div class="modal-footer">
                     <!-- Footer content -->

@@ -47,7 +47,7 @@ class ProovedoreController extends Controller
 
         $proovedore = Proovedore::create($request->all());
 
-        return redirect()->route('proovedores.index')
+        return redirect()->route('Proovedore.index')
             ->with('success', 'Proovedore created successfully.');
     }
 
@@ -90,7 +90,7 @@ class ProovedoreController extends Controller
 
         $proovedore->update($request->all());
 
-        return redirect()->route('proovedores.index')
+        return redirect()->route('Proovedore.index')
             ->with('success', 'Proovedore updated successfully');
     }
 
@@ -103,7 +103,7 @@ class ProovedoreController extends Controller
     {
         $proovedore = Proovedore::find($id)->delete();
 
-        return redirect()->route('proovedores.index')
+        return redirect()->route('Proovedore.index')
             ->with('success', 'Proovedore deleted successfully');
     }
 }
