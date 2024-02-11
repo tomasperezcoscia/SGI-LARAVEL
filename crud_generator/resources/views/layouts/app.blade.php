@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,17 +14,40 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    <!-- styles -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+        integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- autoNumeric JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/autonumeric@5.0.0/dist/autoNumeric.min.js"></script>
+
+
+
 </head>
+
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-black shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'BasisConstrucciones') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -49,47 +73,48 @@
                                 </li>
                             @endif
                         @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('Cliente.index') }}"> Clientes </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('Obra.index') }}"> Obras </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('Personal.index') }}"> Personal </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('Proovedore.index') }}"> Proovedores </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('Tarea.index') }}"> Tareas </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('Gasto.index') }}"> Gastos </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('Insumo.index') }}"> Insumos </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('AusenciasPersonal.index') }}"> Ausencias Personal </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('HorasPersonal.index') }}"> HorasPersonal </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('OrdenesDeCompra.index') }}"> Ordenes de compra </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('TipoDeObra.index') }}"> Tipo De Obra </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('Cliente.index') }}"> Clientes </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('Obra.index') }}"> Obras </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('Personal.index') }}"> Personal </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('Proovedore.index') }}"> Proovedores </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('Tarea.index') }}"> Tareas </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('Gasto.index') }}"> Gastos </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('Insumo.index') }}"> Insumos </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('AusenciasPersonal.index') }}"> Ausencias Personal </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('HorasPersonal.index') }}"> HorasPersonal </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('OrdenesDeCompra.index') }}"> Ordenes de compra </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('TipoDeObra.index') }}"> Tipo De Obra </a>
+                            </li>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
@@ -110,4 +135,5 @@
         </main>
     </div>
 </body>
+
 </html>

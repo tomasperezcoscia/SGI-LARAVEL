@@ -88,10 +88,12 @@ class PersonalController extends Controller
     {
         request()->validate(Personal::$rules);
 
-        $personal->update($request->all());
-
-        return redirect()->route('Personal.index')
-            ->with('success', 'Personal updated successfully');
+        try {
+            $personal->update($request->all());
+            return redirect()->route('Personal.index')->with('success', 'Personal updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Failed to update personal. ' . $e->getMessage());
+        }
     }
 
     /**
