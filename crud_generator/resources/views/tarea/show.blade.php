@@ -25,7 +25,7 @@
                             {{ $tarea->nombre }}
                         </div>
                         <div class="form-group">
-                            <strong>Tipo:</strong>
+                            <strong>Tipo de tarea:</strong>
                             {{ $tarea->tipo }}
                         </div>
 
