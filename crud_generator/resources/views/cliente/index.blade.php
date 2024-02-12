@@ -60,7 +60,7 @@
 											<td>{{ $cliente->tipo }}</td>
 
                                             <td>
-                                                <form>
+                                                <form action="{{ route('Cliente.destroy',$cliente->id) }}" method="POST">
                                                     <!-- Modal Trigger Buttons -->
                                                     <button type="button" class="btn btn-primary btn-sm"
                                                         data-toggle="modal" data-target="#ModalShow{{ $cliente->id }}">
@@ -72,8 +72,7 @@
                                                     </button>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i
-                                                            class="fa fa-fw fa-trash"></i> {{ __('Borrar') }}</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> {{ __('Borrar') }}</button>
                                                 </form>
 
                                             </td>
