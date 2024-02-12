@@ -21,7 +21,7 @@
                     <div class="card-body">
                         
                         <div class="form-group">
-                            <strong>Tipo:</strong>
+                            <strong>Tipo de ausencia:</strong>
                             {{ $ausenciasPersonal->tipo }}
                         </div>
                         <div class="form-group">
@@ -29,15 +29,15 @@
                             {{ $ausenciasPersonal->descripcion }}
                         </div>
                         <div class="form-group">
-                            <strong>Fechadeinicio:</strong>
+                            <strong>Fecha de inicio:</strong>
                             {{ $ausenciasPersonal->fechaDeInicio }}
                         </div>
                         <div class="form-group">
-                            <strong>Fechadefin:</strong>
+                            <strong>Fecha fin:</strong>
                             {{ $ausenciasPersonal->fechaDeFin }}
                         </div>
                         <div class="form-group">
-                            <strong>Personal Id:</strong>
+                            <strong>Personal ausente:</strong>
                             {{ $ausenciasPersonal->personal_id }}
                         </div>
 

@@ -155,6 +155,7 @@
             </div>
         </div>
     </div>
+    
     @if(!$personals->isEmpty())
         @include('Personal.modal.create')
     @endif

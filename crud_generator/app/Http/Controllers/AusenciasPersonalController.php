@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AusenciasPersonal;
+use App\Models\Personal;
 use Illuminate\Http\Request;
 
 /**
@@ -32,7 +33,8 @@ class AusenciasPersonalController extends Controller
     public function create()
     {
         $ausenciasPersonal = new AusenciasPersonal();
-        return view('ausencias-personal.create', compact('ausenciasPersonal'));
+        return view('ausencias-personal.create', compact('ausenciasPersonal'))
+            ->with('personals', Personal::all());
     }
 
     /**

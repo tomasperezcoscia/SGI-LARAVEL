@@ -1,3 +1,6 @@
+        @php
+            $personal = null;
+        @endphp
 <div class="modal fade text-left" id="ModalCreate" tabindex="-1">
     <form method="POST" action="{{ route('Personal.store') }}" role="form" enctype="multipart/form-data">
         @csrf
