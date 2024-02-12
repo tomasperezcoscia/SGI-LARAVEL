@@ -64,7 +64,7 @@
 											<td>{{ $proovedore->fechaBaja }}</td>
 
                                             <td>
-                                                <form>
+                                                <form action="{{ route('Proovedore.destroy',$proovedore->id) }}" method="POST">
                                                     <!-- Modal Trigger Buttons -->
                                                     <button type="button" class="btn btn-primary btn-sm"
                                                         data-toggle="modal" data-target="#ModalShow{{ $proovedore->id }}">
@@ -110,15 +110,15 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="form-group">
-                                                                <strong>Legajo:</strong>
+                                                                <strong>Nro de legajo:</strong>
                                                                 {{ $proovedore->legajo }}
                                                             </div>
                                                             <div class="form-group">
-                                                                <strong>Nombre:</strong>
+                                                                <strong>Nombre de proovedor:</strong>
                                                                 {{ $proovedore->nombre }}
                                                             </div>
                                                             <div class="form-group">
-                                                                <strong>Numerodetelefono:</strong>
+                                                                <strong>Numero de telefono:</strong>
                                                                 {{ $proovedore->numeroDeTelefono }}
                                                             </div>
                                                             <div class="form-group">
@@ -126,15 +126,15 @@
                                                                 {{ $proovedore->cuil }}
                                                             </div>
                                                             <div class="form-group">
-                                                                <strong>Tipo:</strong>
+                                                                <strong>Tipo de proveedor:</strong>
                                                                 {{ $proovedore->tipo }}
                                                             </div>
                                                             <div class="form-group">
-                                                                <strong>Fechaalta:</strong>
+                                                                <strong>Fecha de alta:</strong>
                                                                 {{ $proovedore->fechaAlta }}
                                                             </div>
                                                             <div class="form-group">
-                                                                <strong>Fechabaja:</strong>
+                                                                <strong>Fecha de baja:</strong>
                                                                 {{ $proovedore->fechaBaja }}
                                                             </div>
                                                         </div>

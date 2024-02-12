@@ -20,7 +20,7 @@ class TipoDeObraController extends Controller
     {
         $tipoDeObras = TipoDeObra::paginate();
 
-        return view('tipo-de-obra.index', compact('tipoDeObras'))
+        return view('TipoDeObra.index', compact('tipoDeObras'))
             ->with('i', (request()->input('page', 1) - 1) * $tipoDeObras->perPage());
     }
 
@@ -32,7 +32,7 @@ class TipoDeObraController extends Controller
     public function create()
     {
         $tipoDeObra = new TipoDeObra();
-        return view('tipo-de-obra.create', compact('tipoDeObra'));
+        return view('TipoDeObra.create', compact('tipoDeObra'));
     }
 
     /**
@@ -47,7 +47,7 @@ class TipoDeObraController extends Controller
 
         $tipoDeObra = TipoDeObra::create($request->all());
 
-        return redirect()->route('tipo-de-obras.index')
+        return redirect()->route('TipoDeObra.index')
             ->with('success', 'TipoDeObra created successfully.');
     }
 
@@ -61,7 +61,7 @@ class TipoDeObraController extends Controller
     {
         $tipoDeObra = TipoDeObra::find($id);
 
-        return view('tipo-de-obra.show', compact('tipoDeObra'));
+        return view('TipoDeObra.show', compact('tipoDeObra'));
     }
 
     /**
@@ -74,7 +74,7 @@ class TipoDeObraController extends Controller
     {
         $tipoDeObra = TipoDeObra::find($id);
 
-        return view('tipo-de-obra.edit', compact('tipoDeObra'));
+        return view('TipoDeObra.edit', compact('tipoDeObra'));
     }
 
     /**
@@ -90,7 +90,7 @@ class TipoDeObraController extends Controller
 
         $tipoDeObra->update($request->all());
 
-        return redirect()->route('tipo-de-obras.index')
+        return redirect()->route('TipoDeObra.index')
             ->with('success', 'TipoDeObra updated successfully');
     }
 
@@ -103,7 +103,7 @@ class TipoDeObraController extends Controller
     {
         $tipoDeObra = TipoDeObra::find($id)->delete();
 
-        return redirect()->route('tipo-de-obras.index')
+        return redirect()->route('TipoDeObra.index')
             ->with('success', 'TipoDeObra deleted successfully');
     }
 }

@@ -20,7 +20,7 @@ class TareaController extends Controller
     {
         $tareas = Tarea::paginate();
 
-        return view('tarea.index', compact('tareas'))
+        return view('Tarea.index', compact('tareas'))
             ->with('i', (request()->input('page', 1) - 1) * $tareas->perPage());
     }
 
@@ -32,7 +32,7 @@ class TareaController extends Controller
     public function create()
     {
         $tarea = new Tarea();
-        return view('tarea.create', compact('tarea'));
+        return view('Tarea.create', compact('tarea'));
     }
 
     /**
@@ -47,7 +47,7 @@ class TareaController extends Controller
 
         $tarea = Tarea::create($request->all());
 
-        return redirect()->route('tareas.index')
+        return redirect()->route('Tarea.index')
             ->with('success', 'Tarea created successfully.');
     }
 
@@ -61,7 +61,7 @@ class TareaController extends Controller
     {
         $tarea = Tarea::find($id);
 
-        return view('tarea.show', compact('tarea'));
+        return view('Tarea.show', compact('tarea'));
     }
 
     /**
@@ -74,7 +74,7 @@ class TareaController extends Controller
     {
         $tarea = Tarea::find($id);
 
-        return view('tarea.edit', compact('tarea'));
+        return view('Tarea.edit', compact('tarea'));
     }
 
     /**
@@ -90,7 +90,7 @@ class TareaController extends Controller
 
         $tarea->update($request->all());
 
-        return redirect()->route('tareas.index')
+        return redirect()->route('Tarea.index')
             ->with('success', 'Tarea updated successfully');
     }
 
@@ -103,7 +103,7 @@ class TareaController extends Controller
     {
         $tarea = Tarea::find($id)->delete();
 
-        return redirect()->route('tareas.index')
+        return redirect()->route('Tarea.index')
             ->with('success', 'Tarea deleted successfully');
     }
 }
