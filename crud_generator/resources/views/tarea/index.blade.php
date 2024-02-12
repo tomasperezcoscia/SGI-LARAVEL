@@ -16,20 +16,11 @@
                                 {{ __('Tarea') }}
                             </span>
 
-                            @if ($tareas->isEmpty())
                             <div class="float-right">
                                 <a href="{{ route('Tarea.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Agregar Tarea') }}
                                 </a>
                               </div>
-                            @else
-                             <div class="float-right">
-                                <a href="#" data-toggle="modal" data-target="#ModalCreate"
-                                    class="btn btn-primary btn-sm float-right" data-placement="left">
-                                    {{ __('Agregar Tarea') }}
-                                </a>
-                              </div>
-                            @endif
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -132,7 +123,4 @@
             </div>
         </div>
     </div>
-    @if(!$tareas->isEmpty())
-        @include('Tarea.modal.create')
-    @endif
 @endsection

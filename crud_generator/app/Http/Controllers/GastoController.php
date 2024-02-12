@@ -47,7 +47,7 @@ class GastoController extends Controller
 
         $gasto = Gasto::create($request->all());
 
-        return redirect()->route('gastos.index')
+        return redirect()->route('Gasto.index')
             ->with('success', 'Gasto created successfully.');
     }
 
@@ -90,7 +90,7 @@ class GastoController extends Controller
 
         $gasto->update($request->all());
 
-        return redirect()->route('gastos.index')
+        return redirect()->route('Gasto.index')
             ->with('success', 'Gasto updated successfully');
     }
 
@@ -103,7 +103,7 @@ class GastoController extends Controller
     {
         $gasto = Gasto::find($id)->delete();
 
-        return redirect()->route('gastos.index')
+        return redirect()->route('Gasto.index')
             ->with('success', 'Gasto deleted successfully');
     }
 }

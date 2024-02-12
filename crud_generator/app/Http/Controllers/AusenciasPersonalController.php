@@ -22,7 +22,8 @@ class AusenciasPersonalController extends Controller
         $ausenciasPersonals = AusenciasPersonal::paginate();
 
         return view('ausencias-personal.index', compact('ausenciasPersonals'))
-            ->with('i', (request()->input('page', 1) - 1) * $ausenciasPersonals->perPage());
+            ->with('i', (request()->input('page', 1) - 1) * $ausenciasPersonals->perPage())
+            ->with('personals', Personal::all());;
     }
 
     /**
@@ -49,7 +50,7 @@ class AusenciasPersonalController extends Controller
 
         $ausenciasPersonal = AusenciasPersonal::create($request->all());
 
-        return redirect()->route('ausencias-personals.index')
+        return redirect()->route('AusenciasPersonal.index')
             ->with('success', 'AusenciasPersonal created successfully.');
     }
 
@@ -92,7 +93,7 @@ class AusenciasPersonalController extends Controller
 
         $ausenciasPersonal->update($request->all());
 
-        return redirect()->route('ausencias-personals.index')
+        return redirect()->route('AusenciasPersonal.index')
             ->with('success', 'AusenciasPersonal updated successfully');
     }
 
@@ -105,7 +106,7 @@ class AusenciasPersonalController extends Controller
     {
         $ausenciasPersonal = AusenciasPersonal::find($id)->delete();
 
-        return redirect()->route('ausencias-personals.index')
+        return redirect()->route('AusenciasPersonal.index')
             ->with('success', 'AusenciasPersonal deleted successfully');
     }
 }

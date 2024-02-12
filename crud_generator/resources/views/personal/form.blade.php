@@ -41,13 +41,3 @@
         <!-- Add any additional buttons or functionality you want in the modal footer -->
     </div>
 </div>
-
-<script>
-    $(function() {
-        // Initialize datepickers
-        $('.datepicker').datepicker({
-            dateFormat: 'yy-mm-dd', // Change the date format as needed
-            // You can add more options here
-        });
-    });
-</script>

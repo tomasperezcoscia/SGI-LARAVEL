@@ -18,7 +18,7 @@
 
                              <div class="float-right">
                                 <a href="{{ route('AusenciasPersonal.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Agregar ausencia') }}
                                 </a>
                               </div>
                         </div>
@@ -52,7 +52,7 @@
 											<td>{{ $ausenciasPersonal->descripcion }}</td>
 											<td>{{ $ausenciasPersonal->fechaDeInicio }}</td>
 											<td>{{ $ausenciasPersonal->fechaDeFin }}</td>
-											<td>{{ $ausenciasPersonal->personal_id }}</td>
+											<td>{{ ($personals->firstWhere('id', $ausenciasPersonal->personal_id)->nombre) }}</td>
 
                                             <td>
                                                 <form action="{{ route('AusenciasPersonal.destroy',$ausenciasPersonal->id) }}" method="POST">
@@ -83,7 +83,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-body">
                                                             <!-- Include the form fields here -->
-                                                            @include('ausenciasPersonal.form')
+                                                            @include('ausencias-personal.form')
                                                         </div>
                                                     </div>
                                                 </div>
@@ -118,7 +118,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <strong>Personal ausente:</strong>
-                                                                {{ $ausenciasPersonal->personal_id }}
+                                                                {{ ($personals->firstWhere('id', $ausenciasPersonal->personal_id)->nombre) }}
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -142,7 +142,4 @@
             </div>
         </div>
     </div>
-    @if(!$ausenciasPersonals->isEmpty())
-        @include('AsuenciasPersonal.modal.create')
-    @endif
 @endsection

@@ -34,7 +34,6 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
-                                        <th>No</th>
                                         
 										<th>Fechadecarga</th>
 										<th>Cliente Id</th>
@@ -48,7 +47,6 @@
                                 <tbody>
                                     @foreach ($horasPersonals as $horasPersonal)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
                                             
 											<td>{{ $horasPersonal->fechaDeCarga }}</td>
 											<td>{{ $horasPersonal->cliente_id }}</td>

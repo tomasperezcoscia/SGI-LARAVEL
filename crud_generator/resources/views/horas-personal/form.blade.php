@@ -28,7 +28,10 @@
         </div>
 
     </div>
-    <div class="box-footer mt20">
+    <div class="modal-footer">
+        <!-- Footer content -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
         <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+        <!-- Add any additional buttons or functionality you want in the modal footer -->
     </div>
 </div>

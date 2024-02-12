@@ -16,20 +16,11 @@
                                 {{ __('Tabla de clientes') }}
                             </span>
 
-                            @if ($clientes->isEmpty())
                             <div class="float-right">
                                 <a href="{{ route('Cliente.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Agregar Cliente') }}
                                 </a>
                               </div>
-                            @else
-                             <div class="float-right">
-                                <a href="#" data-toggle="modal" data-target="#ModalCreate"
-                                    class="btn btn-primary btn-sm float-right" data-placement="left">
-                                    {{ __('Agregar Cliente') }}
-                                </a>
-                              </div>
-                            @endif
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -138,7 +129,4 @@
             </div>
         </div>
     </div>
-    @if(!$clientes->isEmpty())
-        @include('Cliente.modal.create')
-    @endif
 @endsection
