@@ -9,7 +9,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Include the form fields here -->
-                    @include('tipoDeObra.form')
+                    @include('tipo-de-obra.form')
                 </div>
                 <div class="modal-footer">
                     <!-- Footer content -->

@@ -20,7 +20,7 @@ class TipoDeObraController extends Controller
     {
         $tipoDeObras = TipoDeObra::paginate();
 
-        return view('TipoDeObra.index', compact('tipoDeObras'))
+        return view('tipo-de-obra.index', compact('tipoDeObras'))
             ->with('i', (request()->input('page', 1) - 1) * $tipoDeObras->perPage());
     }
 

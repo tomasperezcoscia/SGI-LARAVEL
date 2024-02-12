@@ -88,7 +88,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-body">
                                                             <!-- Include the form fields here -->
-                                                            @include('tipoDeObra.form')
+                                                            @include('tipo-de-obra.form')
                                                         </div>
                                                     </div>
                                                 </div>
@@ -139,6 +139,6 @@
         </div>
     </div>
     @if(!$tipoDeObras->isEmpty())
-        @include('TipoDeObra.modal.create')
+        @include('tipo-de-obra.modal.create')
     @endif
 @endsection
