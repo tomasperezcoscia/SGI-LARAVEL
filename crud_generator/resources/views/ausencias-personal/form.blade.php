@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('personal_id', 'Personal ausente') }}
-            {{ Form::select('personal_id', $personals->pluck('nombre', 'id'), $ausenciasPersonal->personal_id, ['class' => 'form-control select' . ($errors->has('personal_id') ? ' is-invalid' : ''), 'placeholder' => 'Seleccionar personal ausente', 'data-allow-clear' => 'true']) }}
+            {{ Form::select('personal_id', $personals->pluck('nombre', 'id'), $ausenciasPersonal->personal_id, ['class' => 'form-control select2' . ($errors->has('personal_id') ? ' is-invalid' : ''), 'placeholder' => 'Seleccionar personal ausente', 'data-allow-clear' => 'true']) }}
             {!! $errors->first('personal_id', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 

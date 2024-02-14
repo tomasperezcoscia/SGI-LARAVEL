@@ -12,15 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $cliente_id
  * @property $numeroOrden
  * @property $descripcionTarea
- * @property $cuit_cuil
- * @property $fechaDeIngreso
- * @property $caracter
- * @property $polizaArt
- * @property $vencimientoPolizaArt
- * @property $polizaDeAccPer
- * @property $vencimientoPolizaDeAccPer
- * @property $created_at
- * @property $updated_at
+ * @property $valorTarea
  *
  * @property Cliente $cliente
  * @property HorasPersonal[] $horasPersonals
@@ -34,13 +26,8 @@ class OrdenesDeCompra extends Model
 		'numeroOrdenInterna' => 'required',
 		'cliente_id' => 'required',
 		'numeroOrden' => 'required',
-		'cuit_cuil' => 'required',
-		'fechaDeIngreso' => 'required',
-		'caracter' => 'required',
-		'polizaArt' => 'required',
-		'vencimientoPolizaArt' => 'required',
-		'polizaDeAccPer' => 'required',
-		'vencimientoPolizaDeAccPer' => 'required',
+        'descripcionTarea' => 'required',
+        'valorTarea' => 'required',
     ];
 
     protected $perPage = 20;
@@ -50,8 +37,7 @@ class OrdenesDeCompra extends Model
      *
      * @var array
      */
-    protected $fillable = ['numeroOrdenInterna','cliente_id','numeroOrden','descripcionTarea','cuit_cuil','fechaDeIngreso','caracter','polizaArt','vencimientoPolizaArt','polizaDeAccPer','vencimientoPolizaDeAccPer'];
-
+    protected $fillable = ['numeroOrdenInterna','cliente_id','numeroOrden','descripcionTarea','valorTarea'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

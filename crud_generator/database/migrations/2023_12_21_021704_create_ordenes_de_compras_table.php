@@ -19,13 +19,7 @@ class CreateOrdenesDeComprasTable extends Migration
             $table->unsignedBigInteger('cliente_id');
             $table->integer('numeroOrden');
             $table->string('descripcionTarea')->nullable();
-            $table->string('cuit_cuil', 13);
-            $table->date('fechaDeIngreso');
-            $table->char('caracter');
-            $table->integer('polizaArt');
-            $table->date('vencimientoPolizaArt');
-            $table->integer('polizaDeAccPer');
-            $table->date('vencimientoPolizaDeAccPer');
+            $table->float('valorTarea')->nullable();
             $table->timestamps();
 
             // Foreign key constraints

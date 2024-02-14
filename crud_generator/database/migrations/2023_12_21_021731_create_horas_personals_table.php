@@ -15,7 +15,6 @@ class CreateHorasPersonalsTable extends Migration
     {
         Schema::create('horas_personals', function (Blueprint $table) {
             $table->id();
-            $table->date('fechaDeCarga');
             $table->unsignedBigInteger('cliente_id');
             $table->unsignedBigInteger('personal_id');
             $table->unsignedBigInteger('orden_de_compra_id');

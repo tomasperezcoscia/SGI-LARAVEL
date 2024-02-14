@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\HorasPersonal;
+use App\Models\OrdenesDeCompra;
+use App\Models\Cliente;
+use App\Models\Personal;
+use App\Models\Tarea;
 use Illuminate\Http\Request;
 
 /**
@@ -16,12 +20,33 @@ class HorasPersonalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $horasPersonals = HorasPersonal::paginate();
+        $search = $request->get('search');
+        if ($search) {
+            $horasPersonals = HorasPersonal::whereHas('ordenDeCompra', function ($query) use ($search) {
+                    $query->where('numeroOrdenInterna', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('cliente', function ($query) use ($search) {
+                    $query->where('nombre', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('personal', function ($query) use ($search) {
+                    $query->where('nombre', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('tarea', function ($query) use ($search) {
+                    $query->where('nombre', 'like', '%' . $search . '%');
+                })
+                ->paginate(10);
+        } else {
+            $horasPersonals = HorasPersonal::paginate();
+        }
 
         return view('horas-personal.index', compact('horasPersonals'))
-            ->with('i', (request()->input('page', 1) - 1) * $horasPersonals->perPage());
+            ->with('i', (request()->input('page', 1) - 1) * $horasPersonals->perPage())
+            ->with('ordenesDeCompras', OrdenesDeCompra::all())
+            ->with('clientes', Cliente::all())
+            ->with('personals', Personal::all())
+            ->with('tareas', Tarea::all());
     }
 
     /**
@@ -32,7 +57,11 @@ class HorasPersonalController extends Controller
     public function create()
     {
         $horasPersonal = new HorasPersonal();
-        return view('horas-personal.create', compact('horasPersonal'));
+        return view('horas-personal.create', compact('horasPersonal'))
+            ->with('ordenesDeCompras', OrdenesDeCompra::all())
+            ->with('clientes', Cliente::all())
+            ->with('personals', Personal::all())
+            ->with('tareas', Tarea::all());
     }
 
     /**

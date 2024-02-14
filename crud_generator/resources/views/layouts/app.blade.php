@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
 
@@ -35,6 +36,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- autoNumeric JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/autonumeric@5.0.0/dist/autoNumeric.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 
     
@@ -78,38 +81,69 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('Cliente.index') }}"> Clientes </a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="proveedoresDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-truck"></i> Proveedores
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="proveedoresDropdown">
+                                    <a class="dropdown-item" href="{{ route('Proovedore.index') }}">
+                                        <i class="fas fa-truck"></i> Proveedores
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('Insumo.index') }}">
+                                        <i class="fas fa-cubes"></i> Insumos
+                                    </a>
+                                </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('Obra.index') }}"> Obras </a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="personalDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-users"></i> Personal
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="personalDropdown">
+                                    <a class="dropdown-item" href="{{ route('Personal.index') }}">
+                                        <i class="fas fa-users"></i> Personal
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('AusenciasPersonal.index') }}">
+                                        <i class="fas fa-calendar-times"></i> Ausencias
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('Gasto.index') }}">
+                                        <i class="fas fa-money-bill"></i> Gastos
+                                    </a>
+                                </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('Personal.index') }}"> Personal </a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="obraDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-building"></i> Obras
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="obraDropdown">
+
+                                    <!--<a class="dropdown-item" href="{"{ route('Obra.index') }}">-->
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-building"></i> Obras WORKINPROGRESS
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('HorasPersonal.index') }}">
+                                        <i class="fas fa-clock"></i> Horas
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('TipoDeObra.index') }}">
+                                        <i class="fas fa-cogs"></i> Tipo De Obra
+                                    </a>
+                                </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('Proovedore.index') }}"> Proovedores </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('Tarea.index') }}"> Tareas </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('Gasto.index') }}"> Gastos </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('Insumo.index') }}"> Insumos </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('AusenciasPersonal.index') }}"> Ausencias Personal </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('HorasPersonal.index') }}"> HorasPersonal </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('OrdenesDeCompra.index') }}"> Ordenes de compra </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('TipoDeObra.index') }}"> Tipo De Obra </a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="clienteDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-users"></i> Clientes
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="clienteDropdown">
+                                    <a class="dropdown-item" href="{{ route('Cliente.index') }}">
+                                        <i class="fas fa-users"></i> Clientes
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('OrdenesDeCompra.index') }}">
+                                        <i class="fas fa-shopping-cart"></i> Ordenes de compra
+                                    </a>
+                                </div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -147,6 +181,10 @@
     $('.datepicker').datepicker({
         dateFormat: 'yy-mm-dd', // Change the date format as needed
         // You can add more options here
+    });
+    $('.select2').select2({
+        allowClear: true,
+        width: '100%'
     });
 });
 </script>

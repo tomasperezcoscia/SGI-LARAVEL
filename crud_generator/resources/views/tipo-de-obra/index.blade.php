@@ -76,8 +76,12 @@
                                                 {{ method_field('PATCH') }}
                                                 @csrf
                                                 <div class="modal-dialog" role="document">
-                                                        Tipo De Obra
-                                                    @endsection                                                                                                                                                                                                                
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <!-- Include the form fields here -->
+                                                            @include('tipo-de-obra.form')
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
@@ -88,7 +92,7 @@
                                                         <!-- Modal header, body, and footer -->
                                                         <div class="modal-header">
                                                             @section('template_title')
-                                                                {{ __('Mostrar') }} Tarea
+                                                                {{ __('Mostrar') }} tipo de obra
                                                             @endsection
                                                         </div>
                                                         <div class="modal-body">
