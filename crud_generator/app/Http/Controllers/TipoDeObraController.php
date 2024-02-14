@@ -20,7 +20,7 @@ class TipoDeObraController extends Controller
     {
         $tipoDeObras = TipoDeObra::paginate();
 
-        return view('TipoDeObra.index', compact('tipoDeObras'))
+        return view('tipo-de-obra.index', compact('tipoDeObras'))
             ->with('i', (request()->input('page', 1) - 1) * $tipoDeObras->perPage());
     }
 
@@ -32,7 +32,7 @@ class TipoDeObraController extends Controller
     public function create()
     {
         $tipoDeObra = new TipoDeObra();
-        return view('TipoDeObra.create', compact('tipoDeObra'));
+        return view('tipo-de-obra.create', compact('tipoDeObra'));
     }
 
     /**
@@ -61,7 +61,7 @@ class TipoDeObraController extends Controller
     {
         $tipoDeObra = TipoDeObra::find($id);
 
-        return view('TipoDeObra.show', compact('tipoDeObra'));
+        return view('tipo-de-obra.show', compact('tipoDeObra'));
     }
 
     /**
@@ -74,7 +74,7 @@ class TipoDeObraController extends Controller
     {
         $tipoDeObra = TipoDeObra::find($id);
 
-        return view('TipoDeObra.edit', compact('tipoDeObra'));
+        return view('tipo-de-obra.edit', compact('tipoDeObra'));
     }
 
     /**

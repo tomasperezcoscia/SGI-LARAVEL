@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
  * Class HorasPersonal
  *
  * @property $id
- * @property $fechaDeCarga
  * @property $cliente_id
  * @property $personal_id
  * @property $orden_de_compra_id
@@ -27,7 +26,6 @@ class HorasPersonal extends Model
 {
     
     static $rules = [
-		'fechaDeCarga' => 'required',
 		'cliente_id' => 'required',
 		'personal_id' => 'required',
 		'orden_de_compra_id' => 'required',
@@ -41,7 +39,7 @@ class HorasPersonal extends Model
      *
      * @var array
      */
-    protected $fillable = ['fechaDeCarga','cliente_id','personal_id','orden_de_compra_id','tarea_id'];
+    protected $fillable = ['cliente_id','personal_id','orden_de_compra_id','tarea_id'];
 
 
     /**

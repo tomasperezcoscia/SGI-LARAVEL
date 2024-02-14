@@ -21,48 +21,32 @@
                     <div class="card-body">
                         
                         <div class="form-group">
-                            <strong>Numeroordeninterna:</strong>
+                            <strong>Numero de orden interna:</strong>
                             {{ $ordenesDeCompra->numeroOrdenInterna }}
                         </div>
                         <div class="form-group">
-                            <strong>Cliente Id:</strong>
+                            <strong>Cliente:</strong>
                             {{ $ordenesDeCompra->cliente_id }}
                         </div>
                         <div class="form-group">
-                            <strong>Numeroorden:</strong>
+                            <strong>Numero de orden:</strong>
                             {{ $ordenesDeCompra->numeroOrden }}
                         </div>
                         <div class="form-group">
-                            <strong>Descripciontarea:</strong>
+                            <strong>Descripcion de tarea:</strong>
                             {{ $ordenesDeCompra->descripcionTarea }}
                         </div>
                         <div class="form-group">
-                            <strong>Cuit Cuil:</strong>
-                            {{ $ordenesDeCompra->cuit_cuil }}
+                            <strong>Valor tarea:</strong>
+                            {{ $ordenesDeCompra->valorTarea }}
                         </div>
                         <div class="form-group">
-                            <strong>Fechadeingreso:</strong>
-                            {{ $ordenesDeCompra->fechaDeIngreso }}
+                            <strong>Iva:</strong>
+                            {{ $ordenesDeCompra->valorTarea * 0.21 }}
                         </div>
                         <div class="form-group">
-                            <strong>Caracter:</strong>
-                            {{ $ordenesDeCompra->caracter }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Polizaart:</strong>
-                            {{ $ordenesDeCompra->polizaArt }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Vencimientopolizaart:</strong>
-                            {{ $ordenesDeCompra->vencimientoPolizaArt }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Polizadeaccper:</strong>
-                            {{ $ordenesDeCompra->polizaDeAccPer }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Vencimientopolizadeaccper:</strong>
-                            {{ $ordenesDeCompra->vencimientoPolizaDeAccPer }}
+                            <strong>Valor tarea con iva:</strong>
+                            {{ $ordenesDeCompra->valorTarea * 1.21}}
                         </div>
 
                     </div>

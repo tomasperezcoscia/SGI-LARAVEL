@@ -16,20 +16,11 @@
                                 {{ __('Tipo De Obra') }}
                             </span>
 
-                            @if ($tipoDeObras->isEmpty())
                             <div class="float-right">
                                 <a href="{{ route('TipoDeObra.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Agregar tipo de obra') }}
                                 </a>
                               </div>
-                            @else
-                             <div class="float-right">
-                                <a href="#" data-toggle="modal" data-target="#ModalCreate"
-                                    class="btn btn-primary btn-sm float-right" data-placement="left">
-                                    {{ __('Agregar tipo de obra') }}
-                                </a>
-                              </div>
-                            @endif
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -88,7 +79,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-body">
                                                             <!-- Include the form fields here -->
-                                                            @include('tipoDeObra.form')
+                                                            @include('tipo-de-obra.form')
                                                         </div>
                                                     </div>
                                                 </div>
@@ -101,7 +92,7 @@
                                                         <!-- Modal header, body, and footer -->
                                                         <div class="modal-header">
                                                             @section('template_title')
-                                                                {{ __('Mostrar') }} Tarea
+                                                                {{ __('Mostrar') }} tipo de obra
                                                             @endsection
                                                         </div>
                                                         <div class="modal-body">
@@ -138,7 +129,5 @@
             </div>
         </div>
     </div>
-    @if(!$tipoDeObras->isEmpty())
-        @include('TipoDeObra.modal.create')
-    @endif
 @endsection
+

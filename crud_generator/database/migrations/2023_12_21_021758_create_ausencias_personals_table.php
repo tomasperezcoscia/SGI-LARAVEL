@@ -18,7 +18,7 @@ class CreateAusenciasPersonalsTable extends Migration
             $table->timestamps();
 
             // Foreign key constraint
-            $table->foreign('personal_id')->references('id')->on('personal');
+            $table->foreign('personal_id')->references('id')->on('personals');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Insumo;
+use App\Models\Proovedore;
 use Illuminate\Http\Request;
 
 /**
@@ -16,12 +17,23 @@ class InsumoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $insumos = Insumo::paginate();
+        $search = $request->get('search');
+        if ($search) {
+            $insumos = Insumo::where('nombre', 'like', '%' . $search . '%')
+                ->orWhere('tipo', 'like', '%' . $search . '%')
+                ->orWhere('precio', 'like', '%' . $search . '%')
+                ->orWhere('inventario', 'like', '%' . $search . '%')
+                ->orWhere('ultimaFechaPrecio', 'like', '%' . $search . '%')
+                ->paginate(10);
+        } else {
+            $insumos = Insumo::paginate();
+        }
 
         return view('insumo.index', compact('insumos'))
-            ->with('i', (request()->input('page', 1) - 1) * $insumos->perPage());
+            ->with('i', (request()->input('page', 1) - 1) * $insumos->perPage())
+            ->with('proovedores', Proovedore::all());
     }
 
     /**
@@ -32,7 +44,7 @@ class InsumoController extends Controller
     public function create()
     {
         $insumo = new Insumo();
-        return view('insumo.create', compact('insumo'));
+        return view('insumo.create', compact('insumo'))->with('proovedores', Proovedore::all());
     }
 
     /**
@@ -47,8 +59,7 @@ class InsumoController extends Controller
 
         $insumo = Insumo::create($request->all());
 
-        return redirect()->route('insumos.index')
-            ->with('success', 'Insumo created successfully.');
+        return redirect()->route('Insumo.index')->with('success', 'Insumo created successfully.');
     }
 
     /**
@@ -90,8 +101,7 @@ class InsumoController extends Controller
 
         $insumo->update($request->all());
 
-        return redirect()->route('insumos.index')
-            ->with('success', 'Insumo updated successfully');
+        return redirect()->route('Insumo.index')->with('success', 'Insumo updated successfully');
     }
 
     /**
@@ -103,7 +113,6 @@ class InsumoController extends Controller
     {
         $insumo = Insumo::find($id)->delete();
 
-        return redirect()->route('insumos.index')
-            ->with('success', 'Insumo deleted successfully');
+        return redirect()->route('Insumo.index')->with('success', 'Insumo deleted successfully');
     }
 }

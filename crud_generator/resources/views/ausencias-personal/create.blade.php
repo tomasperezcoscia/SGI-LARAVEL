@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    {{ __('Create') }} Ausencias Personal
+    {{ __('Agregar') }} Ausencias Personal
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">{{ __('Create') }} Ausencias Personal</span>
+                        <span class="card-title">{{ __('Agregar') }} Ausencias Personal</span>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('AusenciasPersonal.store') }}"  role="form" enctype="multipart/form-data">
