@@ -14,7 +14,6 @@ class CreateInsumosTable extends Migration
             $table->string('tipo'); // Type of the insumo
             $table->double('precio', 8, 2); // Price
             $table->integer('inventario'); // Inventory quantity
-            $table->date('ultimaFechaPrecio'); // Last date when the price was updated
             $table->unsignedBigInteger('proovedor_id')->nullable(); // Foreign key to Proovedores
             $table->timestamps();
 

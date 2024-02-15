@@ -66,7 +66,7 @@
 											<td>{{ $insumo->tipo }}</td>
 											<td>{{ $insumo->precio }}</td>
 											<td>{{ $insumo->inventario }}</td>
-											<td>{{ $insumo->ultimaFechaPrecio }}</td>
+                                            <td>{{ $insumo->updated_at->subHours(3) }}</td>
 											<td>{{ ($proovedores->firstWhere('id', $insumo->proovedor_id)->nombre) }}</td>
 
                                             <td>
@@ -133,7 +133,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <strong>Ultima fecha precio:</strong>
-                                                                {{ $insumo->ultimaFechaPrecio }}
+                                                                {{ $insumo->updated_at->subHours(3) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <strong>Proovedor Id:</strong>

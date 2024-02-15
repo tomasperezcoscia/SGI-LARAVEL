@@ -17,8 +17,8 @@ class CreateProovedoresTable extends Migration
             $table->id();
             $table->integer('legajo')->unique(); // Unique provider number
             $table->string('nombre'); // Provider's name
-            $table->bigInteger('numeroDeTelefono'); // Phone number as long int
-            $table->string('cuil', 14); // CUIL number
+            $table->bigInteger('numeroDeTelefono')->nullable(); // Phone number as long int, nullable
+            $table->string('cuil', 14)->nullable(); // CUIL number, nullable
             $table->string('tipo'); // Type of provider
             $table->date('fechaAlta'); // Date of registration
             $table->date('fechaBaja')->nullable(); // Date of deregistration, nullable

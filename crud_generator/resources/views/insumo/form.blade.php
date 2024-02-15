@@ -22,13 +22,8 @@
             {!! $errors->first('inventario', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
-            {{ Form::label('ultimaFechaPrecio', 'Ultima fecha de actualizaciond de precio') }}
-            {{ Form::text('ultimaFechaPrecio', $insumo->ultimaFechaPrecio, ['class' => 'form-control datepicker' . ($errors->has('ultimaFechaPrecio') ? ' is-invalid' : ''), 'placeholder' => 'Ultima fecha de actuialización de precio', 'data-date-format' => 'yyyy-mm-dd', 'data-date-autoclose' => 'true']) }}
-            {!! $errors->first('ultimaFechaPrecio', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        <div class="form-group">
             {{ Form::label('proovedor_id', 'Proveedor de insumo') }}
-            {{ Form::select('proovedor_id', $proovedores->pluck('nombre', 'id'), $insumo->proovedor_id, ['class' => 'form-control select' . ($errors->has('proovedor_id') ? ' is-invalid' : ''), 'placeholder' => 'Seleccionar proveedor de insumo', 'data-allow-clear' => 'true']) }}
+            {{ Form::select('proovedor_id', $proovedores->pluck('nombre', 'id'), $insumo->proovedor_id, ['class' => 'form-control select2' . ($errors->has('proovedor_id') ? ' is-invalid' : ''), 'placeholder' => 'Seleccionar proveedor de insumo', 'data-allow-clear' => 'true']) }}
             {!! $errors->first('proovedor_id', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 
