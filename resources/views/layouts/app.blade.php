@@ -26,9 +26,7 @@
 
 
     <!-- Scripts -->
-    <link rel="stylesheet" href="{{ asset('public/build/assets/app-lhA9k1qk.css') }}">
-    <script src="{{ asset('public/build/assets/app-Sy-x52Gu.js') }}"></script>
-    
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
