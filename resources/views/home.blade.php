@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('Te logueaste correctamente al Sistema de Gestion integral de Basis Construciones!') }}
                 </div>
             </div>
         </div>
