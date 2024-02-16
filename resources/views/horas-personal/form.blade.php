@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('horas', 'Horas Invertidas') }}
-            {{ Form::text('horas', $insumo->inventario, ['class' => 'form-control' . ($errors->has('horas') ? ' is-invalid' : ''), 'placeholder' => 'Horas']) }}
+            {{ Form::text('horas', $horasPersonal->inventario, ['class' => 'form-control' . ($errors->has('horas') ? ' is-invalid' : ''), 'placeholder' => 'Horas']) }}
             {!! $errors->first('horas', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 
