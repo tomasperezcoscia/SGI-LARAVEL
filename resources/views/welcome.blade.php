@@ -27,7 +27,8 @@
 
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="stylesheet" href="/SGI-LARAVEL/public/build/assets/app-lhA9k1qk.css">
+    <script src="/SGI-LARAVEL/public/build/assets/app-Sy-x52Gu.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
@@ -74,9 +75,9 @@
         <h1 class="display-4"
             style="position: absolute; top: 50%; left: 60%; transform: translate(-50%, -50%); z-index: 2; font-size: 4.4rem; color: white; font-family: 'Arial', sans-serif; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
             Basis Construcciones S.R.L</h1>
-        <img src="/img/logo.svg" alt="logo" class="img-fluid"
+        <img src="/SGI-LARAVEL/public/img/logo.svg" alt="logo" class="img-fluid"
             style="position: absolute; top: 47%; left: 28%; transform: translate(-50%, -50%); z-index: 2; width: 250px;">
-        <img src="/img/hero.jpeg" alt="Construction Hero Image" class="img-fluid"
+        <img src="/SGI-LARAVEL/public/img/hero.jpeg" alt="Construction Hero Image" class="img-fluid"
             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; padding-left: 15%; padding-right: 15%">
     </div>
 
