@@ -30,6 +30,7 @@ class HorasPersonal extends Model
 		'personal_id' => 'required',
 		'orden_de_compra_id' => 'required',
 		'tarea_id' => 'required',
+        'horas' => 'required'
     ];
 
     protected $perPage = 20;
@@ -39,7 +40,7 @@ class HorasPersonal extends Model
      *
      * @var array
      */
-    protected $fillable = ['cliente_id','personal_id','orden_de_compra_id','tarea_id'];
+    protected $fillable = ['cliente_id','personal_id','orden_de_compra_id','tarea_id','horas'];
 
 
     /**

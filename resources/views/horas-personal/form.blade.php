@@ -19,11 +19,15 @@
             })->pluck('text', 'id'), $horasPersonal->orden_de_compra_id ?? '', ['class' => 'form-control select2' . ($errors->has('orden_de_compra_id') ? ' is-invalid' : ''), 'placeholder' => 'Numero de orden interna']) }}
             {!! $errors->first('orden_de_compra_id', '<div class="invalid-feedback">:message</div>') !!}
         </div>
-        
         <div class="form-group">
             {{ Form::label('tarea_id', 'Tarea') }}
             {{ Form::select('tarea_id', $tareas->pluck('nombre', 'id'), $horasPersonal->tarea_id ?? '', ['class' => 'form-control select2' . ($errors->has('tarea_id') ? ' is-invalid' : ''), 'placeholder' => 'Tarea']) }}
             {!! $errors->first('tarea_id', '<div class="invalid-feedback">:message</div>') !!}
+        </div>
+        <div class="form-group">
+            {{ Form::label('horas', 'Horas Invertidas') }}
+            {{ Form::text('horas', $insumo->inventario, ['class' => 'form-control' . ($errors->has('horas') ? ' is-invalid' : ''), 'placeholder' => 'Horas']) }}
+            {!! $errors->first('horas', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 
     </div>

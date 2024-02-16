@@ -19,6 +19,7 @@ class CreateHorasPersonalsTable extends Migration
             $table->unsignedBigInteger('personal_id');
             $table->unsignedBigInteger('orden_de_compra_id');
             $table->unsignedBigInteger('tarea_id');
+            $table->int('horas');
             $table->timestamps();
 
             // Foreign key constraints
@@ -29,6 +30,7 @@ class CreateHorasPersonalsTable extends Migration
         });
     }
 
+    
     /**
      * Reverse the migrations.
      *
