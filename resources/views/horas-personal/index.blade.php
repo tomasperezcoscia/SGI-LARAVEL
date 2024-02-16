@@ -40,6 +40,7 @@
 										<th>Personal</th>
 										<th>Orden de compra (Interna)</th>
 										<th>Tarea</th>
+                                        <th>Horas</th>
 
                                         <th></th>
                                     </tr>
@@ -53,6 +54,7 @@
 											<td>{{ ($personals->firstWhere('id', $horasPersonal->personal_id)->nombre) }}</td>
 											<td>{{ ($ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->numeroOrdenInterna) }}</td>
 											<td>{{ ($tareas->firstWhere('id', $horasPersonal->tarea_id)->nombre) }}</td>
+                                            <td>{{ $horasPersonal->horas }}</td>
 
                                             <td>
                                                 <form action="{{ route('HorasPersonal.destroy',$horasPersonal->id) }}" method="POST">
@@ -119,6 +121,10 @@
                                                             <div class="form-group">
                                                                 <strong>Tarea:</strong>
                                                                 {{ ($tareas->firstWhere('id', $horasPersonal->tarea_id)->nombre) }}
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <strong>Horas:</strong>
+                                                                {{ $horasPersonal->horas }}
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
