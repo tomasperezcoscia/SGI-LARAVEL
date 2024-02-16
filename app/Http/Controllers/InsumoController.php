@@ -25,7 +25,6 @@ class InsumoController extends Controller
                 ->orWhere('tipo', 'like', '%' . $search . '%')
                 ->orWhere('precio', 'like', '%' . $search . '%')
                 ->orWhere('inventario', 'like', '%' . $search . '%')
-                ->orWhere('ultimaFechaPrecio', 'like', '%' . $search . '%')
                 ->paginate(10);
         } else {
             $insumos = Insumo::paginate();

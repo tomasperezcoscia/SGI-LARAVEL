@@ -20,7 +20,7 @@ class TareaController extends Controller
     {
         $tareas = Tarea::paginate();
 
-        return view('Tarea.index', compact('tareas'))
+        return view('tarea.index', compact('tareas'))
             ->with('i', (request()->input('page', 1) - 1) * $tareas->perPage());
     }
 
@@ -32,7 +32,7 @@ class TareaController extends Controller
     public function create()
     {
         $tarea = new Tarea();
-        return view('Tarea.create', compact('tarea'));
+        return view('tarea.create', compact('tarea'));
     }
 
     /**
@@ -61,7 +61,7 @@ class TareaController extends Controller
     {
         $tarea = Tarea::find($id);
 
-        return view('Tarea.show', compact('tarea'));
+        return view('tarea.show', compact('tarea'));
     }
 
     /**
@@ -74,7 +74,7 @@ class TareaController extends Controller
     {
         $tarea = Tarea::find($id);
 
-        return view('Tarea.edit', compact('tarea'));
+        return view('tarea.edit', compact('tarea'));
     }
 
     /**

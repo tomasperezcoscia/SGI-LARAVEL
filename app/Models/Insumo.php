@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $tipo
  * @property $precio
  * @property $inventario
- * @property $ultimaFechaPrecio
  * @property $proovedor_id
  * @property $created_at
  * @property $updated_at
@@ -30,7 +29,6 @@ class Insumo extends Model
 		'tipo' => 'required',
 		'precio' => 'required',
 		'inventario' => 'required',
-		'ultimaFechaPrecio' => 'required',
     ];
 
     protected $perPage = 20;
@@ -40,7 +38,7 @@ class Insumo extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre','tipo','precio','inventario','ultimaFechaPrecio','proovedor_id'];
+    protected $fillable = ['nombre','tipo','precio','inventario','proovedor_id'];
 
 
     /**

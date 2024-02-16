@@ -54,9 +54,9 @@
 											<td>{{ ($clientes->firstWhere('id', $ordenesDeCompra->cliente_id)->nombre) }}</td>
 											<td>{{ $ordenesDeCompra->numeroOrden }}</td>
 											<td>{{ $ordenesDeCompra->descripcionTarea }}</td>
-											<td>{{ $ordenesDeCompra->valorTarea }}</td>
-                                            <td>{{ $ordenesDeCompra->valorTarea * 0.21 }}</td>
-                                            <td>{{ $ordenesDeCompra->valorTarea * 1.21 }}</td>
+											<td>$ {{ number_format($ordenesDeCompra->valorTarea, 2, ',', '.') }}</td>
+                                            <td>$ {{ number_format($ordenesDeCompra->valorTarea * 0.21, 2, ',', '.') }}</td>
+                                            <td>$ {{ number_format($ordenesDeCompra->valorTarea * 1.21, 2, ',', '.') }}</td>
                                             
 
                                             <td>
