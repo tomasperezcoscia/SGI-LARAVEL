@@ -16,9 +16,22 @@ class ProovedoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $proovedores = Proovedore::paginate();
+        $query = Proovedore::query();
+
+        // Búsqueda unificada
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('legajo', 'like', '%' . $search . '%')
+                  ->orWhere('nombre', 'like', '%' . $search . '%')
+                  ->orWhere('numeroDeTelefono', 'like', '%' . $search . '%')
+                  ->orWhere('tipo', 'like', '%' . $search . '%');
+            });
+        }
+
+        $proovedores = $query->paginate(10);
 
         return view('proovedore.index', compact('proovedores'))
             ->with('i', (request()->input('page', 1) - 1) * $proovedores->perPage());

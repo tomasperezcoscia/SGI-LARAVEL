@@ -7,19 +7,30 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12">
+            <!-- Formulario de Búsqueda -->
+            <div class="col-12 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <form method="GET" action="{{ route('Proovedore.index') }}">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" value="{{ request('search') }}" placeholder="Buscar... (Nro de legajo, Nombre, Telefono, Tipo)">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8">
+                <!-- Tabla de Proveedores -->
                 <div class="card">
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-
                             <span id="card_title">
-                                {{ __('Tabla de proovedores') }}
+                                {{ __('Tabla de Proveedores') }}
                             </span>
-                            <div class="float-right">
-                                <a href="{{ route('Proovedore.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Agregar Proovedor') }}
-                                </a>
-                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -27,33 +38,26 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
+
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>                                        
-										<th>Nro de legajo</th>
-										<th>Nombre</th>
-										<th>Telefono</th>
-										<th>Cuil</th>
-										<th>Tipo</th>
-										<th>Fecha de alta</th>
-										<th>Fecha de baja</th>
-
+                                        <th>Nro de legajo</th>
+                                        <th>Nombre</th>
+                                        <th>Telefono</th>
+                                        <th>Tipo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($proovedores as $proovedore)
                                         <tr>                                            
-											<td>{{ $proovedore->legajo }}</td>
-											<td>{{ $proovedore->nombre }}</td>
-											<td>{{ $proovedore->numeroDeTelefono }}</td>
-											<td>{{ $proovedore->cuil }}</td>
-											<td>{{ $proovedore->tipo }}</td>
-											<td>{{ $proovedore->fechaAlta }}</td>
-											<td>{{ $proovedore->fechaBaja }}</td>
-
+                                            <td>{{ $proovedore->legajo }}</td>
+                                            <td>{{ $proovedore->nombre }}</td>
+                                            <td>{{ $proovedore->numeroDeTelefono }}</td>
+                                            <td>{{ $proovedore->tipo }}</td>
                                             <td>
                                                 <form action="{{ route('Proovedore.destroy',$proovedore->id) }}" method="POST">
                                                     <!-- Modal Trigger Buttons -->
@@ -70,7 +74,6 @@
                                                     <button type="submit" class="btn btn-danger btn-sm"><i
                                                             class="fa fa-fw fa-trash"></i> {{ __('Borrar') }}</button>
                                                 </form>
-
                                             </td>
                                         </tr>
                                         <!-- Modals -->
@@ -90,56 +93,39 @@
                                             </form>
                                         </div>
                                         <div class="modal fade text-left" id="ModalShow{{ $proovedore->id }}" tabindex="-1">
-                                                @csrf
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <!-- Modal header, body, and footer -->
-                                                        <div class="modal-header">
-                                                            @section('template_title')
-                                                                {{ __('Mostrar') }} Proovedore
-                                                            @endsection
+                                            @csrf
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <!-- Modal header, body, and footer -->
+                                                    <div class="modal-header">
+                                                        @section('template_title')
+                                                            {{ __('Mostrar') }} Proovedore
+                                                        @endsection
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <strong>Nro de legajo:</strong>
+                                                            {{ $proovedore->legajo }}
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <strong>Nro de legajo:</strong>
-                                                                {{ $proovedore->legajo }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <strong>Nombre de proovedor:</strong>
-                                                                {{ $proovedore->nombre }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <strong>Numero de telefono:</strong>
-                                                                {{ $proovedore->numeroDeTelefono }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <strong>Cuil:</strong>
-                                                                {{ $proovedore->cuil }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <strong>Tipo de proveedor:</strong>
-                                                                {{ $proovedore->tipo }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <strong>Fecha de alta:</strong>
-                                                                {{ $proovedore->fechaAlta }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <strong>Fecha de baja:</strong>
-                                                                {{ $proovedore->fechaBaja }}
-                                                            </div>
+                                                        <div class="form-group">
+                                                            <strong>Nombre de proovedor:</strong>
+                                                            {{ $proovedore->nombre }}
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <div class="modal-footer">
-                                                                <!-- Footer content -->
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-                                                                <!-- Add any additional buttons or functionality you want in the modal footer -->
-                                                            </div>
+                                                        <div class="form-group">
+                                                            <strong>Numero de telefono:</strong>
+                                                            {{ $proovedore->numeroDeTelefono }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Tipo de proveedor:</strong>
+                                                            {{ $proovedore->tipo }}
                                                         </div>
                                                     </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                                                    </div>
                                                 </div>
+                                            </div>
                                         </div>
-                                    
                                     @endforeach
                                 </tbody>
                             </table>
@@ -147,6 +133,23 @@
                     </div>
                 </div>
                 {!! $proovedores->links() !!}
+            </div>
+
+            <!-- Formulario de Agregar Proveedor -->
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span id="form_title">
+                            {{ __('Agregar Proveedor') }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('Proovedore.store') }}" role="form" enctype="multipart/form-data">
+                            @csrf
+                            @include('proovedore.form')
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

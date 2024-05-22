@@ -11,10 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $legajo
  * @property $nombre
  * @property $numeroDeTelefono
- * @property $cuil
  * @property $tipo
- * @property $fechaAlta
- * @property $fechaBaja
  * @property $created_at
  * @property $updated_at
  *
@@ -24,14 +21,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Proovedore extends Model
 {
-    
     static $rules = [
-		'legajo' => 'required',
-		'nombre' => 'required',
-		'numeroDeTelefono' => 'required',
-		'cuil' => 'required',
-		'tipo' => 'required',
-		'fechaAlta' => 'required',
+        'legajo' => 'required',
+        'nombre' => 'required',
+        'numeroDeTelefono' => 'required',
+        'tipo' => 'required',
     ];
 
     protected $perPage = 20;
@@ -41,8 +35,7 @@ class Proovedore extends Model
      *
      * @var array
      */
-    protected $fillable = ['legajo','nombre','numeroDeTelefono','cuil','tipo','fechaAlta','fechaBaja'];
-
+    protected $fillable = ['legajo', 'nombre', 'numeroDeTelefono', 'tipo'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -51,6 +44,4 @@ class Proovedore extends Model
     {
         return $this->hasMany('App\Models\Insumo', 'proovedor_id', 'id');
     }
-    
-
 }

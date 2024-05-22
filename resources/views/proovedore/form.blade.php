@@ -17,32 +17,14 @@
             {!! $errors->first('numeroDeTelefono', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
-            {{ Form::label('cuil', 'Cuil de la empresa') }}
-            {{ Form::text('cuil', $proovedore->cuil ?? '', ['class' => 'form-control' . ($errors->has('cuil') ? ' is-invalid' : ''), 'placeholder' => 'CUIL/CUIT']) }}
-            {!! $errors->first('cuil', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        <div class="form-group">
             {{ Form::label('tipo', 'Tipo de proovedor') }}
             {{ Form::text('tipo', $proovedore->tipo ?? '', ['class' => 'form-control' . ($errors->has('tipo') ? ' is-invalid' : ''), 'placeholder' => 'Cementera/Calera/Metalurgica/etc.']) }}
             {!! $errors->first('tipo', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        <div class="form-group">
-            {{ Form::label('fechaAlta', 'Fecha de alta en el sistema') }}
-            {{ Form::text('fechaAlta', $proovedore->fechaAlta ?? '', ['class' => 'form-control datepicker' . ($errors->has('fechaAlta') ? ' is-invalid' : ''), 'placeholder' => 'Que dia se dio de alta']) }}
-            {!! $errors->first('fechaAlta', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        <div class="form-group">
-            {{ Form::label('fechaBaja', 'Fecha de alta del sistema') }}
-            {{ Form::text('fechaBaja', $proovedore->fechaBaja ?? '', ['class' => 'form-control datepicker' . ($errors->has('fechaBaja') ? ' is-invalid' : ''), 'placeholder' => 'Que dia se dio de baja']) }}
-            {!! $errors->first('fechaBaja', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 
     </div>
 
     <div class="modal-footer">
-        <!-- Footer content -->
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-        <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
-        <!-- Add any additional buttons or functionality you want in the modal footer -->
+        <button type="submit" class="btn btn-primary">{{ __('Agregar') }}</button>
     </div>
 </div>
