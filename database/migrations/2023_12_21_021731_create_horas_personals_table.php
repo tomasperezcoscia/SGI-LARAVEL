@@ -18,14 +18,13 @@ class CreateHorasPersonalsTable extends Migration
             $table->unsignedBigInteger('cliente_id');
             $table->unsignedBigInteger('personal_id');
             $table->unsignedBigInteger('orden_de_compra_id');
-            $table->unsignedBigInteger('tarea_id');
+            $table->unsignedFloat('cant_horas');
             $table->timestamps();
 
             // Foreign key constraints
             $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->foreign('personal_id')->references('id')->on('personals');
             $table->foreign('orden_de_compra_id')->references('id')->on('ordenes_de_compras');
-            $table->foreign('tarea_id')->references('id')->on('tareas');
         });
     }
 

@@ -1,21 +1,9 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HorasPersonalController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Debugbar::info();
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
@@ -38,9 +26,5 @@ Route::resource('Proovedore', App\Http\Controllers\ProovedoreController::class);
 Route::resource('Tarea', App\Http\Controllers\TareaController::class);
 Route::resource('TipoDeObra', App\Http\Controllers\TipoDeObraController::class);
 
-
-
-
-
-
-
+// Custom route for partialStore method
+Route::post('/HorasPersonal/partialStore', [HorasPersonalController::class, 'partialStore'])->name('HorasPersonal.partialStore');
