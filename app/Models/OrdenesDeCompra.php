@@ -23,9 +23,9 @@ class OrdenesDeCompra extends Model
 {
     
     static $rules = [
-		'numeroOrdenInterna' => 'required',
-		'cliente_id' => 'required',
-		'numeroOrden' => 'required',
+        'numeroOrdenInterna' => 'required',
+        'cliente_id' => 'required',
+        'numeroOrden' => 'required',
         'descripcionTarea' => 'required',
         'valorTarea' => 'required',
     ];
@@ -37,16 +37,16 @@ class OrdenesDeCompra extends Model
      *
      * @var array
      */
-    protected $fillable = ['numeroOrdenInterna','cliente_id','numeroOrden','descripcionTarea','valorTarea'];
+    protected $fillable = ['numeroOrdenInterna', 'cliente_id', 'numeroOrden', 'descripcionTarea', 'valorTarea'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function cliente()
     {
-        return $this->hasOne('App\Models\Cliente', 'id', 'cliente_id');
+        return $this->belongsTo('App\Models\Cliente', 'cliente_id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

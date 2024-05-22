@@ -27,31 +27,42 @@ class HorasPersonalController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->get('search');
-        if ($search) {
-            $horasPersonals = HorasPersonal::whereHas('ordenDeCompra', function ($query) use ($search) {
-                    $query->where('numeroOrdenInterna', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('cliente', function ($query) use ($search) {
+        $query = HorasPersonal::query();
+
+        // Filtro por fecha
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('created_at', '>=', $request->input('fecha_desde'));
+        }
+
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('created_at', '<=', $request->input('fecha_hasta'));
+        }
+
+        // Búsqueda unificada
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->whereHas('ordenDeCompra.cliente', function ($query) use ($search) {
                     $query->where('nombre', 'like', '%' . $search . '%');
                 })
                 ->orWhereHas('personal', function ($query) use ($search) {
                     $query->where('nombre', 'like', '%' . $search . '%');
                 })
-                ->orWhereHas('tarea', function ($query) use ($search) {
-                    $query->where('nombre', 'like', '%' . $search . '%');
-                })
-                ->paginate(10);
-        } else {
-            $horasPersonals = HorasPersonal::paginate();
+                ->orWhereHas('ordenDeCompra', function ($query) use ($search) {
+                    $query->where('numeroOrdenInterna', 'like', '%' . $search . '%')
+                          ->orWhere('descripcionTarea', 'like', '%' . $search . '%');
+                });
+            });
         }
 
-        return view('horas-personal.index', compact('horasPersonals'))
-            ->with('i', (request()->input('page', 1) - 1) * $horasPersonals->perPage())
-            ->with('ordenesDeCompras', OrdenesDeCompra::all())
-            ->with('clientes', Cliente::all())
-            ->with('personals', Personal::all())
-            ->with('tareas', Tarea::all());
+        $horasPersonals = $query->paginate(10);
+
+        return view('horas-personal.index', [
+            'horasPersonals' => $horasPersonals,
+            'clientes' => Cliente::all(),
+            'personals' => Personal::all(),
+            'ordenesDeCompras' => OrdenesDeCompra::all(),
+        ]);
     }
 
     /**

@@ -7,8 +7,34 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <!-- Tabla de Horas Personal -->
+            <!-- Formulario de Búsqueda -->
+            <div class="col-12 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <form method="GET" action="{{ route('HorasPersonal.index') }}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="date" name="fecha_desde" class="form-control" value="{{ request('fecha_desde') }}" placeholder="Fecha desde">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" name="fecha_hasta" class="form-control" value="{{ request('fecha_hasta') }}" placeholder="Fecha hasta">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control" value="{{ request('search') }}" placeholder="Buscar... (Cliente, Personal, Orden, Tarea)">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary">Buscar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
             <div class="col-sm-8">
+                <!-- Tabla de Horas Personal -->
                 <div class="card">
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -128,7 +154,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $horasPersonals->links() !!}
+                {!! $horasPersonals->appends(request()->input())->links() !!}
             </div>
             
             <!-- Formulario de Agregar Horas Personal -->

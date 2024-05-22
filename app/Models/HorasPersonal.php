@@ -22,10 +22,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class HorasPersonal extends Model
 {
-    
     static $rules = [
-		'personal_id' => 'required',
-		'orden_de_compra_id' => 'required',
+        'personal_id' => 'required',
+        'orden_de_compra_id' => 'required',
         'cant_horas' => 'required'
     ];
 
@@ -36,23 +35,22 @@ class HorasPersonal extends Model
      *
      * @var array
      */
-    protected $fillable = ['personal_id','orden_de_compra_id', 'cant_horas'];
+    protected $fillable = ['personal_id', 'orden_de_compra_id', 'cant_horas'];
 
-    
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ordenesDeCompra()
+    public function ordenDeCompra()
     {
-        return $this->hasOne('App\Models\OrdenesDeCompra', 'id', 'orden_de_compra_id');
+        return $this->belongsTo('App\Models\OrdenesDeCompra', 'orden_de_compra_id');
     }
-    
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function personal()
     {
-        return $this->hasOne('App\Models\Personal', 'id', 'personal_id');
+        return $this->belongsTo('App\Models\Personal', 'personal_id');
     }
 
 }
