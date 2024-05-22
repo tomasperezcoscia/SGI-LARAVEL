@@ -24,7 +24,6 @@ class HorasPersonal extends Model
 {
     
     static $rules = [
-		'cliente_id' => 'required',
 		'personal_id' => 'required',
 		'orden_de_compra_id' => 'required',
         'cant_horas' => 'required'
@@ -37,16 +36,8 @@ class HorasPersonal extends Model
      *
      * @var array
      */
-    protected $fillable = ['cliente_id','personal_id','orden_de_compra_id', 'cant_horas'];
+    protected $fillable = ['personal_id','orden_de_compra_id', 'cant_horas'];
 
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function cliente()
-    {
-        return $this->hasOne('App\Models\Cliente', 'id', 'cliente_id');
-    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

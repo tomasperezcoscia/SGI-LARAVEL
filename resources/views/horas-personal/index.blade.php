@@ -33,7 +33,7 @@
                                         <th>Personal</th>
                                         <th>Orden de compra (Interna)</th>
                                         <th>Tarea</th>
-                                        <th>Cantidad de Horas</th> <!-- New column -->
+                                        <th>Cantidad de Horas</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -41,11 +41,11 @@
                                     @foreach ($horasPersonals as $horasPersonal)
                                         <tr>
                                             <td>{{ $horasPersonal->created_at->subHours(3) }}</td>
-                                            <td>{{ ($clientes->firstWhere('id', $horasPersonal->cliente_id)->nombre) }}</td>
-                                            <td>{{ ($personals->firstWhere('id', $horasPersonal->personal_id)->nombre) }}</td>
+                                            <td>{{ $clientes->firstWhere('id', $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->cliente_id)->nombre }}</td>
+                                            <td>{{ $personals->firstWhere('id', $horasPersonal->personal_id)->nombre }}</td>
                                             <td>{{ $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->numeroOrdenInterna }}</td>
                                             <td>{{ $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->descripcionTarea }}</td>
-                                            <td>{{ $horasPersonal->cant_horas }}</td> <!-- New data field -->
+                                            <td>{{ formatHours($horasPersonal->cant_horas) }}</td>
                                             <td>
                                                 <form action="{{ route('HorasPersonal.destroy', $horasPersonal->id) }}" method="POST">
                                                     <!-- Modal Trigger Buttons -->
@@ -97,11 +97,11 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <strong>Cliente:</strong>
-                                                            {{ ($clientes->firstWhere('id', $horasPersonal->cliente_id)->nombre) }}
+                                                            {{ $clientes->firstWhere('id', $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->cliente_id)->nombre }}
                                                         </div>
                                                         <div class="form-group">
                                                             <strong>Personal:</strong>
-                                                            {{ ($personals->firstWhere('id', $horasPersonal->personal_id)->nombre) }}
+                                                            {{ $personals->firstWhere('id', $horasPersonal->personal_id)->nombre }}
                                                         </div>
                                                         <div class="form-group">
                                                             <strong>Orden de compra:</strong>
@@ -109,11 +109,11 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <strong>Tarea:</strong>
-                                                            {{ $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->descripcionTarea  }}
+                                                            {{ $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->descripcionTarea }}
                                                         </div>
                                                         <div class="form-group">
                                                             <strong>Cantidad de Horas:</strong>
-                                                            {{ $horasPersonal->cant_horas }}
+                                                            {{ formatHours($horasPersonal->cant_horas) }}
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -147,3 +147,11 @@
         </div>
     </div>
 @endsection
+
+@php
+function formatHours($decimalHours) {
+    $hours = floor($decimalHours);
+    $minutes = ($decimalHours - $hours) * 60;
+    return sprintf('%d:%02d', $hours, $minutes);
+}
+@endphp

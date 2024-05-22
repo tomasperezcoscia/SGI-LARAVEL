@@ -105,29 +105,34 @@ class HorasPersonalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        // Validate the request
+{
+    try {
         $request->validate(HorasPersonal::$rules);
-    
-        // Create the new HorasPersonal record
+
+        // Create the HorasPersonal entry
         $horasPersonal = HorasPersonal::create($request->all());
-    
-        // Retrieve related data
-        $cliente = Cliente::find($horasPersonal->cliente_id);
-        $personal = Personal::find($horasPersonal->personal_id);
-        $ordenDeCompra = OrdenesDeCompra::find($horasPersonal->orden_de_compra_id);
-    
-        // Return a JSON response with the new record and related data
+
+        // Return the response with additional client name
         return response()->json([
             'success' => true,
             'horasPersonal' => $horasPersonal,
-            'cliente_nombre' => $cliente->nombre,
-            'personal_nombre' => $personal->nombre,
-            'numeroOrdenInterna' => $ordenDeCompra->numeroOrdenInterna,
-            'descripcionTarea' => $ordenDeCompra->descripcionTarea,
+            'personal_nombre' => Personal::find($horasPersonal->personal_id)->nombre,
+            'numeroOrdenInterna' => OrdenesDeCompra::find($horasPersonal->orden_de_compra_id)->numeroOrdenInterna,
+            'descripcionTarea' => OrdenesDeCompra::find($horasPersonal->orden_de_compra_id)->descripcionTarea,
         ]);
+    } catch (\Exception $e) {
+        // Log error for debugging
+        \Log::error('Error: ', ['message' => $e->getMessage()]);
+
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+        ], 500);
     }
-    
+}
+
+ 
+
 
     /**
      * Display the specified resource.
