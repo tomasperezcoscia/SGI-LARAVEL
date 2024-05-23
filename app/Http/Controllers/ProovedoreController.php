@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Proovedore;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
+use Barryvdh\Debugbar\Facades\Debugbar;
+use Illuminate\Support\Facades\Log;
+
 
 /**
  * Class ProovedoreController
@@ -60,8 +65,10 @@ class ProovedoreController extends Controller
 
         $proovedore = Proovedore::create($request->all());
 
-        return redirect()->route('Proovedore.index')
-            ->with('success', 'Proovedore created successfully.');
+        return response()->json([
+            'success' => true,
+            'proovedore' => $proovedore
+        ]);
     }
 
     /**
@@ -97,14 +104,27 @@ class ProovedoreController extends Controller
      * @param  Proovedore $proovedore
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Proovedore $proovedore)
+
+    public function update(Request $request, $id)
     {
+        // Validar los datos
         request()->validate(Proovedore::$rules);
 
-        $proovedore->update($request->all());
+        // Buscar el registro
+        $proovedore = Proovedore::find($id);
 
-        return redirect()->route('Proovedore.index')
-            ->with('success', 'Proovedore updated successfully');
+        if (!$proovedore) {
+            return response()->json(['success' => false, 'message' => 'El registro no existe en la base de datos']);
+        }
+
+        // Intentar actualizar el registro
+        $updated = $proovedore->update($request->all());
+
+        if ($updated) {
+            return response()->json(['success' => true, 'proovedore' => $proovedore]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
+        }
     }
 
     /**

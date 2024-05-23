@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Proovedore extends Model
 {
-    static $rules = [
+    public static $rules = [
         'legajo' => 'required',
         'nombre' => 'required',
         'numeroDeTelefono' => 'required',
@@ -30,18 +30,20 @@ class Proovedore extends Model
 
     protected $perPage = 20;
 
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
     protected $fillable = ['legajo', 'nombre', 'numeroDeTelefono', 'tipo'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function insumos()
     {
         return $this->hasMany('App\Models\Insumo', 'proovedor_id', 'id');
+    }
+
+    // Sobreescribir el método update
+    public function update(array $attributes = [], array $options = [])
+    {
+        \Log::warning('Atributos para actualización:', $attributes);
+        $result = parent::update($attributes, $options);
+        \Log::warning('Resultado de la actualización en el modelo:', ['success' => $result]);
+
+        return $result;
     }
 }
