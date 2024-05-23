@@ -167,9 +167,12 @@ class HorasPersonalController extends Controller
     public function edit($id)
     {
         $horasPersonal = HorasPersonal::find($id);
+        $personals = Personal::all(); // Asegúrate de tener el modelo correcto para personal
+        $ordenesDeCompras = OrdenesDeCompra::all(); // Asegúrate de tener el modelo correcto para las órdenes de compra
 
-        return view('horas-personal.edit', compact('horasPersonal'));
+        return view('horas-personal.edit', compact('horasPersonal', 'personals', 'ordenesDeCompras'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -178,15 +181,24 @@ class HorasPersonalController extends Controller
      * @param  HorasPersonal $horasPersonal
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, HorasPersonal $horasPersonal)
+    public function update(Request $request, $id)
     {
+        // Validar los datos
         request()->validate(HorasPersonal::$rules);
-
-        $horasPersonal->update($request->all());
-
-        return redirect()->route('HorasPersonal.index')
-            ->with('success', 'HorasPersonal updated successfully');
+    
+        // Buscar el registro existente
+        $horasPersonal = HorasPersonal::find($id);
+    
+        if ($horasPersonal) {
+            // Actualizar el registro
+            $horasPersonal->update($request->all());
+    
+            return response()->json(['success' => true, 'horasPersonal' => $horasPersonal]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
+        }
     }
+    
 
     /**
      * @param int $id

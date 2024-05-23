@@ -91,21 +91,48 @@
                                             </td>
                                         </tr>
                                         <!-- Modals -->
-                                        <div class="modal fade text-left" id="ModalEdit{{ $horasPersonal->id }}" tabindex="-1">
-                                            <form method="POST" action="{{ route('HorasPersonal.update', $horasPersonal->id) }}"
-                                                role="form" enctype="multipart/form-data">
-                                                {{ method_field('PATCH') }}
-                                                @csrf
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body">
-                                                            <!-- Include the form fields here -->
-                                                            @include('horas-personal.form')
+                                        <!-- Modal Edit -->
+                                            <div class="modal fade text-left" id="ModalEdit{{ $horasPersonal->id }}" tabindex="-1">
+                                                <form id="editForm{{ $horasPersonal->id }}" method="POST" action="{{ route('HorasPersonal.update', $horasPersonal->id) }}" role="form" enctype="multipart/form-data">
+                                                    {{ method_field('PATCH') }}
+                                                    @csrf
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    {{ Form::label('personal_id', 'Personal') }}
+                                                                    <select name="personal_id" class="form-control">
+                                                                        @foreach ($personals as $personal)
+                                                                            <option value="{{ $personal->id }}" {{ $horasPersonal->personal_id == $personal->id ? 'selected' : '' }}>
+                                                                                {{ $personal->nombre }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    {{ Form::label('orden_de_compra_id', 'Orden de Compra') }}
+                                                                    <select name="orden_de_compra_id" class="form-control">
+                                                                        @foreach ($ordenesDeCompras as $orden)
+                                                                            <option value="{{ $orden->id }}" {{ $horasPersonal->orden_de_compra_id == $orden->id ? 'selected' : '' }}>
+                                                                                {{ $orden->descripcionTarea }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    {{ Form::label('cant_horas', 'Cantidad de Horas') }}
+                                                                    {{ Form::text('cant_horas', $horasPersonal->cant_horas, ['class' => 'form-control']) }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-primary">{{ __('Guardar Cambios') }}</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cerrar') }}</button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                                                </form>
+                                            </div>
+
                                         <div class="modal fade text-left" id="ModalShow{{ $horasPersonal->id }}" tabindex="-1">
                                             @csrf
                                             <div class="modal-dialog" role="document">
@@ -173,6 +200,48 @@
         </div>
     </div>
 @endsection
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const forms = document.querySelectorAll('form[id^="editForm"]');
+
+    function attachEventListeners(form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            console.log(`Form submitted ${form.id}`);
+
+            const formData = new FormData(form);
+
+            for (const [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      console.log('Form submission successful');
+                      window.location.href = "{{ route('HorasPersonal.index') }}"; // Redirigir al índice después de una edición exitosa
+                  } else {
+                      console.error('Form submission failed', data);
+                  }
+              }).catch(error => {
+                  console.error('Form submission error:', error);
+              });
+        });
+    }
+
+    forms.forEach(form => {
+        attachEventListeners(form);
+    });
+});
+
+</script>
 
 @php
 function formatHours($decimalHours) {
