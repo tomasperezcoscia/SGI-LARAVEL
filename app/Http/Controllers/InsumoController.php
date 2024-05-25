@@ -22,26 +22,32 @@ class InsumoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $query = Insumo::query();
+{
+    $query = Insumo::query();
 
-        // Búsqueda unificada
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where(function($q) use ($search) {
-                $q->where('nombre', 'like', '%' . $search . '%')
-                  ->orWhere('tipo', 'like', '%' . $search . '%')
-                  ->orWhere('precio', 'like', '%' . $search . '%')
-                  ->orWhere('inventario', 'like', '%' . $search . '%');
-            });
-        }
-
-        $insumos = $query->paginate(10);
-        $proovedores = Proovedore::all();
-
-        return view('insumo.index', compact('insumos', 'proovedores'))
-            ->with('i', (request()->input('page', 1) - 1) * $insumos->perPage());
+    // Filtro de fechas
+    if ($request->filled('from_date') && $request->filled('to_date')) {
+        $query->whereBetween('updated_at', [$request->input('from_date'), $request->input('to_date')]);
     }
+
+    // Búsqueda unificada
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function($q) use ($search) {
+            $q->where('nombre', 'like', '%' . $search . '%')
+              ->orWhere('tipo', 'like', '%' . $search . '%')
+              ->orWhere('precio', 'like', '%' . $search . '%')
+              ->orWhere('inventario', 'like', '%' . $search . '%');
+        });
+    }
+
+    $insumos = $query->paginate(10);
+    $proovedores = Proovedore::all();
+
+    return view('insumo.index', compact('insumos', 'proovedores'))
+        ->with('i', (request()->input('page', 1) - 1) * $insumos->perPage());
+}
+
 
     public function create()
     {

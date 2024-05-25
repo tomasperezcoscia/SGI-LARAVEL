@@ -12,13 +12,21 @@
                 <div class="card">
                     <div class="card-header">
                         <form method="GET" action="{{ route('Insumo.index') }}">
-                            <div class="input-group">
-                                <input type="text" name="search" class="form-control"
-                                    placeholder="Buscar... (Nombre, Tipo, Precio, Inventario, Fecha Precio)"
-                                    value="{{ request('search') }}">
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-primary">Buscar</button>
-                                </span>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="date" name="from_date" class="form-control" placeholder="Desde" value="{{ request('from_date') }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" name="to_date" class="form-control" placeholder="Hasta" value="{{ request('to_date') }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control" placeholder="Buscar... (Nombre, Tipo, Precio, Inventario, Fecha Precio)" value="{{ request('search') }}">
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-primary">Buscar</button>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
