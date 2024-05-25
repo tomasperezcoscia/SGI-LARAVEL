@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Insumo;
 use App\Models\Proovedore;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Barryvdh\Debugbar\Facades\Debugbar;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class InsumoController
@@ -19,100 +23,88 @@ class InsumoController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->get('search');
-        if ($search) {
-            $insumos = Insumo::where('nombre', 'like', '%' . $search . '%')
-                ->orWhere('tipo', 'like', '%' . $search . '%')
-                ->orWhere('precio', 'like', '%' . $search . '%')
-                ->orWhere('inventario', 'like', '%' . $search . '%')
-                ->orWhere('ultimaFechaPrecio', 'like', '%' . $search . '%')
-                ->paginate(10);
-        } else {
-            $insumos = Insumo::paginate();
+        $query = Insumo::query();
+
+        // Búsqueda unificada
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('nombre', 'like', '%' . $search . '%')
+                  ->orWhere('tipo', 'like', '%' . $search . '%')
+                  ->orWhere('precio', 'like', '%' . $search . '%')
+                  ->orWhere('inventario', 'like', '%' . $search . '%');
+            });
         }
 
-        return view('insumo.index', compact('insumos'))
-            ->with('i', (request()->input('page', 1) - 1) * $insumos->perPage())
-            ->with('proovedores', Proovedore::all());
+        $insumos = $query->paginate(10);
+        $proovedores = Proovedore::all();
+
+        return view('insumo.index', compact('insumos', 'proovedores'))
+            ->with('i', (request()->input('page', 1) - 1) * $insumos->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $insumo = new Insumo();
-        return view('insumo.create', compact('insumo'))->with('proovedores', Proovedore::all());
+        $proovedores = Proovedore::all();
+        return view('insumo.create', compact('insumo', 'proovedores'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
-    {
-        request()->validate(Insumo::$rules);
+{
+    request()->validate(Insumo::$rules);
 
-        $insumo = Insumo::create($request->all());
+    $insumo = Insumo::create($request->all());
 
-        return redirect()->route('Insumo.index')->with('success', 'Insumo created successfully.');
-    }
+    return response()->json([
+        'success' => true,
+        'insumo' => $insumo
+    ]);
+}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $insumo = Insumo::find($id);
-
         return view('insumo.show', compact('insumo'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $insumo = Insumo::find($id);
-
-        return view('insumo.edit', compact('insumo'));
+        $proovedores = Proovedore::all();
+        return view('insumo.edit', compact('insumo', 'proovedores'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Insumo $insumo
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Insumo $insumo)
+    
+    public function update(Request $request, $id)
     {
-        request()->validate(Insumo::$rules);
+        $request->validate(Insumo::$rules);
 
-        $insumo->update($request->all());
+        $insumo = Insumo::find($id);
 
-        return redirect()->route('Insumo.index')->with('success', 'Insumo updated successfully');
+        if(!$insumo){
+            return response()->json(['success' => false, 'message' => 'El regustro no existe en la base de datos']);
+
+        }
+
+        try {
+            $updated = $insumo->update($request->all());
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar el registro en la base de datos', ['exception' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
+        }
+
+        if ($updated) {
+            return response()->json(['success' => true, 'insumo' => $insumo]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
+        }
     }
 
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
     public function destroy($id)
     {
         $insumo = Insumo::find($id)->delete();
-
         return redirect()->route('Insumo.index')->with('success', 'Insumo deleted successfully');
     }
 }
