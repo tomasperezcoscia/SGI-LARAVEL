@@ -16,11 +16,23 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clientes = Cliente::paginate();
+        $query = Cliente::query();
 
-        return view('Cliente.index', compact('clientes'))
+        // Búsqueda unificada
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('legajo', 'like', '%' . $search . '%')
+                  ->orWhere('nombre', 'like', '%' . $search . '%')
+                  ->orWhere('tipo', 'like', '%' . $search . '%');
+            });
+        }
+
+        $clientes = $query->paginate(10);
+
+        return view('cliente.index', compact('clientes'))
             ->with('i', (request()->input('page', 1) - 1) * $clientes->perPage());
     }
 
@@ -32,7 +44,7 @@ class ClienteController extends Controller
     public function create()
     {
         $cliente = new Cliente();
-        return view('Cliente.create', compact('cliente'));
+        return view('cliente.create', compact('cliente'));
     }
 
     /**
@@ -43,12 +55,14 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Cliente::$rules);
+        $validatedData = $request->validate(Cliente::$rules);
 
-        $cliente = Cliente::create($request->all());
-
-        return redirect()->route('Cliente.index')
-            ->with('success', 'Cliente created successfully.');
+        try {
+            $cliente = Cliente::create($validatedData);
+            return response()->json(['success' => true, 'cliente' => $cliente]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -61,7 +75,7 @@ class ClienteController extends Controller
     {
         $cliente = Cliente::find($id);
 
-        return view('Cliente.show', compact('cliente'));
+        return view('cliente.show', compact('cliente'));
     }
 
     /**
@@ -74,7 +88,7 @@ class ClienteController extends Controller
     {
         $cliente = Cliente::find($id);
 
-        return view('Cliente.edit', compact('cliente'));
+        return view('cliente.edit', compact('cliente'));
     }
 
     /**
@@ -84,14 +98,22 @@ class ClienteController extends Controller
      * @param  Cliente $cliente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cliente $cliente)
+    public function update(Request $request, $id)
     {
-        request()->validate(Cliente::$rules);
+        $validatedData = $request->validate(Cliente::$rules);
 
-        $cliente->update($request->all());
+        $cliente = Cliente::find($id);
 
-        return redirect()->route('Cliente.index')
-            ->with('success', 'Cliente updated successfully');
+        if (!$cliente) {
+            return response()->json(['success' => false, 'message' => 'El registro no existe en la base de datos']);
+        }
+
+        try {
+            $cliente->update($validatedData);
+            return response()->json(['success' => true, 'cliente' => $cliente]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
+        }
     }
 
     /**
@@ -101,9 +123,17 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        $cliente = Cliente::find($id)->delete();
+        $cliente = Cliente::find($id);
+        
+        if (!$cliente) {
+            return response()->json(['success' => false, 'message' => 'Cliente not found']);
+        }
 
-        return redirect()->route('Cliente.index')
-            ->with('success', 'Cliente deleted successfully');
+        try {
+            $cliente->delete();
+            return response()->json(['success' => true, 'message' => 'Cliente deleted successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
     }
 }
