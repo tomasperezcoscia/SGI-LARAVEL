@@ -11,52 +11,41 @@ use Illuminate\Http\Request;
  */
 class PersonalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $personals = Personal::paginate();
+        $query = Personal::query();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('legajo', 'like', '%' . $search . '%')
+                  ->orWhere('nombre', 'like', '%' . $search . '%')
+                  ->orWhere('salario_hora', 'like', '%' . $search . '%')
+                  ->orWhere('estado', 'like', '%' . $search . '%');
+            });
+        }
+
+        $personals = $query->paginate(10);
 
         return view('personal.index', compact('personals'))
             ->with('i', (request()->input('page', 1) - 1) * $personals->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $personal = new Personal();
         return view('personal.create', compact('personal'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         request()->validate(Personal::$rules);
 
         $personal = Personal::create($request->all());
 
-        return redirect()->route('Personal.index')
-            ->with('success', 'Personal created successfully.');
+        return response()->json(['success' => true, 'personal' => $personal]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $personal = Personal::find($id);
@@ -64,12 +53,6 @@ class PersonalController extends Controller
         return view('personal.show', compact('personal'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $personal = Personal::find($id);
@@ -77,35 +60,28 @@ class PersonalController extends Controller
         return view('personal.edit', compact('personal'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Personal $personal
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Personal $personal)
+    public function update(Request $request, $id)
     {
         request()->validate(Personal::$rules);
 
+        $personal = Personal::find($id);
+
+        if (!$personal) {
+            return response()->json(['success' => false, 'message' => 'El registro no existe en la base de datos']);
+        }
+
         try {
             $personal->update($request->all());
-            return redirect()->route('Personal.index')->with('success', 'Personal updated successfully');
+            return response()->json(['success' => true, 'personal' => $personal]);
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Failed to update personal. ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
         }
     }
 
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
     public function destroy($id)
     {
         $personal = Personal::find($id)->delete();
 
-        return redirect()->route('Personal.index')
-            ->with('success', 'Personal deleted successfully');
+        return response()->json(['success' => true, 'message' => 'Personal deleted successfully']);
     }
 }

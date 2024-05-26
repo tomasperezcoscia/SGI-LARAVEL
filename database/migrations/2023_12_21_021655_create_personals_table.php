@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('nombre'); // Name
             $table->integer('salario_hora'); // Hourly wage
             $table->char('estado', 1); // Status
-            $table->date('fechaDeAlta'); // Date of hiring
-            $table->date('fechaDeBaja')->nullable(); // Date of termination, nullable
             $table->timestamps(); // Created_at and updated_at timestamps
         });
     }

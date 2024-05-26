@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $nombre
  * @property $salario_hora
  * @property $estado
- * @property $fechaDeAlta
- * @property $fechaDeBaja
  * @property $created_at
  * @property $updated_at
  *
@@ -22,13 +20,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Personal extends Model
 {
-    
     static $rules = [
-		'legajo' => 'required',
-		'nombre' => 'required',
-		'salario_hora' => 'required',
-		'estado' => 'required',
-		'fechaDeAlta' => 'required',
+        'legajo' => 'required',
+        'nombre' => 'required',
+        'salario_hora' => 'required',
+        'estado' => 'required',
     ];
 
     protected $perPage = 20;
@@ -38,8 +34,5 @@ class Personal extends Model
      *
      * @var array
      */
-    protected $fillable = ['legajo','nombre','salario_hora','estado','fechaDeAlta','fechaDeBaja'];
-
-
-
+    protected $fillable = ['legajo', 'nombre', 'salario_hora', 'estado'];
 }
