@@ -19,19 +19,20 @@ class OrdenesDeCompraController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->get('search');
-        if ($search) {
-            $ordenesDeCompras = OrdenesDeCompra::where('numeroOrdenInterna', 'like', '%' . $search . '%')
-                ->orWhere('cliente_id', 'like', '%' . $search . '%')
-                ->orWhere('numeroOrden', 'like', '%' . $search . '%')
-                ->orWhere('descripcionTarea', 'like', '%' . $search . '%')
-                ->orWhere('valorTarea', 'like', '%' . $search . '%')
-                ->orWhere('iva', 'like', '%' . $search . '%')
-                ->orWhere('valorTareaConIva', 'like', '%' . $search . '%')
-                ->paginate(10);
-        } else {
-            $ordenesDeCompras = OrdenesDeCompra::paginate();
+        $query = OrdenesDeCompra::query();
+
+        // Búsqueda unificada
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('numeroOrdenInterna', 'like', '%' . $search . '%')
+                  ->orWhere('numeroOrden', 'like', '%' . $search . '%')
+                  ->orWhere('descripcionTarea', 'like', '%' . $search . '%')
+                  ->orWhere('valorTarea', 'like', '%' . $search . '%');
+            });
         }
+
+        $ordenesDeCompras = $query->paginate(10);
 
         return view('ordenes-de-compra.index', compact('ordenesDeCompras'))
             ->with('i', (request()->input('page', 1) - 1) * $ordenesDeCompras->perPage())
@@ -45,9 +46,9 @@ class OrdenesDeCompraController extends Controller
      */
     public function create()
     {
-        $ordenesDeCompras = new OrdenesDeCompra();
-        return view('ordenes-de-compra.create', compact('ordenesDeCompras'))
-            ->with('clientes', Cliente::all());
+        $ordenesDeCompra = new OrdenesDeCompra();
+        $clientes = Cliente::all();
+        return view('ordenes-de-compra.create', compact('ordenesDeCompra', 'clientes'));
     }
 
     /**
@@ -58,15 +59,15 @@ class OrdenesDeCompraController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(OrdenesDeCompra::$rules);
-        
-            
-            $ordenesDeCompras = OrdenesDeCompra::create($request->all());
+        $validatedData = $request->validate(OrdenesDeCompra::$rules);
 
-            return redirect()->route('OrdenesDeCompra.index')
-                ->with('success', 'OrdenesDeCompra created successfully.');
+        try {
+            $ordenesDeCompra = OrdenesDeCompra::create($validatedData);
+            return response()->json(['success' => true, 'ordenesDeCompra' => $ordenesDeCompra]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
     }
-
 
     /**
      * Display the specified resource.
@@ -76,9 +77,9 @@ class OrdenesDeCompraController extends Controller
      */
     public function show($id)
     {
-        $ordenesDeCompras = OrdenesDeCompra::find($id);
+        $ordenesDeCompra = OrdenesDeCompra::find($id);
 
-        return view('ordenes-de-compra.show', compact('ordenesDeCompras'));
+        return view('ordenes-de-compra.show', compact('ordenesDeCompra'));
     }
 
     /**
@@ -89,26 +90,35 @@ class OrdenesDeCompraController extends Controller
      */
     public function edit($id)
     {
-        $ordenesDeCompras = OrdenesDeCompra::find($id);
+        $ordenesDeCompra = OrdenesDeCompra::find($id);
+        $clientes = Cliente::all();
 
-        return view('ordenes-de-compra.edit', compact('ordenesDeCompras'));
+        return view('ordenes-de-compra.edit', compact('ordenesDeCompra', 'clientes'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  OrdenesDeCompra $ordenesDeCompras
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OrdenesDeCompra $ordenesDeCompras)
+    public function update(Request $request, $id)
     {
-        request()->validate(OrdenesDeCompra::$rules);
+        $validatedData = $request->validate(OrdenesDeCompra::$rules);
 
-        $ordenesDeCompras->update($request->all());
+        $ordenesDeCompra = OrdenesDeCompra::find($id);
 
-        return redirect()->route('OrdenesDeCompra.index')
-            ->with('success', 'OrdenesDeCompra updated successfully');
+        if (!$ordenesDeCompra) {
+            return response()->json(['success' => false, 'message' => 'El registro no existe en la base de datos']);
+        }
+
+        try {
+            $ordenesDeCompra->update($validatedData);
+            return response()->json(['success' => true, 'ordenesDeCompra' => $ordenesDeCompra]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
+        }
     }
 
     /**
@@ -118,9 +128,17 @@ class OrdenesDeCompraController extends Controller
      */
     public function destroy($id)
     {
-        $ordenesDeCompras = OrdenesDeCompra::find($id)->delete();
+        $ordenesDeCompra = OrdenesDeCompra::find($id);
+        
+        if (!$ordenesDeCompra) {
+            return response()->json(['success' => false, 'message' => 'Orden de compra not found']);
+        }
 
-        return redirect()->route('OrdenesDeCompra.index')
-            ->with('success', 'OrdenesDeCompra deleted successfully');
+        try {
+            $ordenesDeCompra->delete();
+            return response()->json(['success' => true, 'message' => 'Orden de compra deleted successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
     }
 }
