@@ -129,16 +129,13 @@ class OrdenesDeCompraController extends Controller
     public function destroy($id)
     {
         $ordenesDeCompra = OrdenesDeCompra::find($id);
-        
-        if (!$ordenesDeCompra) {
-            return response()->json(['success' => false, 'message' => 'Orden de compra not found']);
+
+        if ($ordenesDeCompra) {
+            $ordenesDeCompra->delete();
+            return redirect()->route('OrdenesDeCompra.index')->with('success', 'Orden de compra eliminada exitosamente');
         }
 
-        try {
-            $ordenesDeCompra->delete();
-            return response()->json(['success' => true, 'message' => 'Orden de compra deleted successfully']);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
-        }
+        return redirect()->route('OrdenesDeCompra.index')->with('error', 'Orden de compra no encontrada');
     }
+
 }

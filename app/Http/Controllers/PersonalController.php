@@ -82,6 +82,7 @@ class PersonalController extends Controller
     {
         $personal = Personal::find($id)->delete();
 
-        return response()->json(['success' => true, 'message' => 'Personal deleted successfully']);
+        return redirect()->route('Personal.index')
+        ->with('success', 'Personal deleted successfully');   
     }
 }

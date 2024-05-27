@@ -123,17 +123,9 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        $cliente = Cliente::find($id);
-        
-        if (!$cliente) {
-            return response()->json(['success' => false, 'message' => 'Cliente not found']);
-        }
+        $cliente = Cliente::find($id)->delete();
 
-        try {
-            $cliente->delete();
-            return response()->json(['success' => true, 'message' => 'Cliente deleted successfully']);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
-        }
+        return redirect()->route('Cliente.index')
+        ->with('success', 'Cliente deleted successfully');   
     }
 }
