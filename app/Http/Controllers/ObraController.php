@@ -1,109 +1,66 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Obra;
+use App\Models\Presupuesto;
+use App\Models\Insumo;
+use App\Models\Proovedore;
 use Illuminate\Http\Request;
 
-/**
- * Class ObraController
- * @package App\Http\Controllers
- */
 class ObraController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function create($presupuestoId)
     {
-        $obras = Obra::paginate();
+        $presupuesto = Presupuesto::with('insumos')->find($presupuestoId);
+        $proovedores = Proovedore::all(); // Añadido para el modal
+        $insumos = Insumo::all(); // Añadido para el select de insumos
 
-        return view('obra.index', compact('obras'))
-            ->with('i', (request()->input('page', 1) - 1) * $obras->perPage());
-    }
+        if ($presupuesto->estado != 'in_progress' || $presupuesto->obras()->exists()) {
+            return redirect()->route('presupuestos.index')->with('error', 'Solo se pueden crear obras sobre presupuestos en progreso y que no tengan obras asociadas.');
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
         $obra = new Obra();
-        return view('obra.create', compact('obra'));
+        return view('obras.create', compact('obra', 'presupuesto', 'proovedores', 'insumos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request, $presupuestoId)
     {
-        request()->validate(Obra::$rules);
+        $presupuesto = Presupuesto::with('insumos')->find($presupuestoId);
 
-        $obra = Obra::create($request->all());
+        if ($presupuesto->estado != 'in_progress' || $presupuesto->obras()->exists()) {
+            return redirect()->route('presupuestos.index')->with('error', 'Solo se pueden crear obras sobre presupuestos en progreso y que no tengan obras asociadas.');
+        }
 
-        return redirect()->route('obras.index')
-            ->with('success', 'Obra created successfully.');
+        $obra = Obra::create([
+            'presupuesto_id' => $presupuestoId,
+            'estado' => 'in_progress'
+        ]);
+
+        foreach ($presupuesto->insumos as $insumo) {
+            $obra->insumos()->attach($insumo->id, ['cantidad' => 0]);
+        }
+
+        return redirect()->route('obras.edit', $obra->id)->with('success', 'Obra creada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $obra = Obra::find($id);
-
-        return view('obra.show', compact('obra'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
+        $obra = Obra::with('insumos', 'presupuesto')->find($id);
+        $insumos = Insumo::all();
+        $proovedores = Proovedore::all(); // Añadido para el modal
+
+        return view('obras.edit', compact('obra', 'insumos', 'proovedores'));
+    }
+
+    public function update(Request $request, $id)
+    {
         $obra = Obra::find($id);
 
-        return view('obra.edit', compact('obra'));
-    }
+        foreach ($request->insumos as $key => $insumoId) {
+            $cantidad = $request->cantidades[$key];
+            $obra->insumos()->syncWithoutDetaching([$insumoId => ['cantidad' => $cantidad]]);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Obra $obra
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Obra $obra)
-    {
-        request()->validate(Obra::$rules);
-
-        $obra->update($request->all());
-
-        return redirect()->route('obras.index')
-            ->with('success', 'Obra updated successfully');
-    }
-
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function destroy($id)
-    {
-        $obra = Obra::find($id)->delete();
-
-        return redirect()->route('obras.index')
-            ->with('success', 'Obra deleted successfully');
+        return redirect()->route('obras.edit', $obra->id)->with('success', 'Obra actualizada exitosamente.');
     }
 }

@@ -113,4 +113,11 @@ class InsumoController extends Controller
         $insumo = Insumo::find($id)->delete();
         return redirect()->route('Insumo.index')->with('success', 'Insumo deleted successfully');
     }
+
+    public function list()
+{
+    $insumos = Insumo::all();
+    return response()->json($insumos);
+}
+
 }

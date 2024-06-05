@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +20,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class OrdenesDeCompra extends Model
 {
-    
     static $rules = [
         'numeroOrdenInterna' => 'required',
         'cliente_id' => 'required',
@@ -44,8 +42,9 @@ class OrdenesDeCompra extends Model
      */
     public function cliente()
     {
-        return $this->belongsTo('App\Models\Cliente', 'cliente_id');
+        return $this->belongsTo(Cliente::class);
     }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -54,6 +53,12 @@ class OrdenesDeCompra extends Model
     {
         return $this->hasMany('App\Models\HorasPersonal', 'orden_de_compra_id', 'id');
     }
-    
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function presupuestos()
+    {
+        return $this->hasMany('App\Models\Presupuesto', 'orden_de_compra_id', 'id');
+    }
 }

@@ -18,32 +18,21 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <!-- Font Awesome -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
-
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <!-- jQuery UI -->
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
-        integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
-    
-
-
-
 </head>
 
 <body>
@@ -118,11 +107,6 @@
                                     <i class="fas fa-building"></i> Obras
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="obraDropdown">
-
-                                    <!--<a class="dropdown-item" href="{"{ route('Obra.index') }}">-->
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-building"></i> Obras WORKINPROGRESS
-                                    </a>
                                     <a class="dropdown-item" href="{{ route('HorasPersonal.index') }}">
                                         <i class="fas fa-clock"></i> Horas
                                     </a>
@@ -142,6 +126,17 @@
                                     </a>
                                     <a class="dropdown-item" href="{{ route('OrdenesDeCompra.index') }}">
                                         <i class="fas fa-shopping-cart"></i> Ordenes de compra
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="presupuestoDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-file-alt"></i> Presupuestos
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="presupuestoDropdown">
+                                    <a class="dropdown-item" href="{{ route('presupuestos.index') }}">
+                                        <i class="fas fa-file-alt"></i> Presupuestos
                                     </a>
                                 </div>
                             </li>
@@ -177,16 +172,16 @@
 
 <script>
     $(document).ready(function() {
-    // Initialize datepickers
-    $('.datepicker').datepicker({
-        dateFormat: 'yy-mm-dd', // Change the date format as needed
-        // You can add more options here
+        // Initialize datepickers
+        $('.datepicker').datepicker({
+            dateFormat: 'yy-mm-dd', // Change the date format as needed
+            // You can add more options here
+        });
+        $('.select2').select2({
+            allowClear: true,
+            width: '100%'
+        });
     });
-    $('.select2').select2({
-        allowClear: true,
-        width: '100%'
-    });
-});
 </script>
 
 </html>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AusenciasPersonal;
 use App\Models\Personal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class AusenciasPersonalController
@@ -12,101 +13,62 @@ use Illuminate\Http\Request;
  */
 class AusenciasPersonalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $ausenciasPersonals = AusenciasPersonal::paginate();
+        $query = AusenciasPersonal::query();
 
-        return view('ausencias-personal.index', compact('ausenciasPersonals'))
-            ->with('i', (request()->input('page', 1) - 1) * $ausenciasPersonals->perPage())
-            ->with('personals', Personal::all());;
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('tipo', 'like', '%' . $search . '%')
+                  ->orWhere('descripcion', 'like', '%' . $search . '%');
+            });
+        }
+
+        $ausenciasPersonals = $query->paginate(10);
+        $personals = Personal::all();
+
+        return view('ausencias-personal.index', compact('ausenciasPersonals', 'personals'))
+            ->with('i', (request()->input('page', 1) - 1) * $ausenciasPersonals->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $ausenciasPersonal = new AusenciasPersonal();
-        return view('ausencias-personal.create', compact('ausenciasPersonal'))
-            ->with('personals', Personal::all());
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        request()->validate(AusenciasPersonal::$rules);
+        $validatedData = $request->validate(AusenciasPersonal::$rules);
 
-        $ausenciasPersonal = AusenciasPersonal::create($request->all());
-
-        return redirect()->route('AusenciasPersonal.index')
-            ->with('success', 'AusenciasPersonal created successfully.');
+        try {
+            $ausenciasPersonal = AusenciasPersonal::create($validatedData);
+            return response()->json(['success' => true, 'ausenciasPersonal' => $ausenciasPersonal]);
+        } catch (\Exception $e) {
+            Log::error('Error al crear el registro', ['exception' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'No se pudo crear el registro']);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request, $id)
     {
+        $validatedData = $request->validate(AusenciasPersonal::$rules);
+
         $ausenciasPersonal = AusenciasPersonal::find($id);
 
-        return view('ausencias-personal.show', compact('ausenciasPersonal'));
+        if(!$ausenciasPersonal){
+            return response()->json(['success' => false, 'message' => 'El registro no existe en la base de datos']);
+        }
+
+        try {
+            $updated = $ausenciasPersonal->update($validatedData);
+            return response()->json(['success' => true, 'ausenciasPersonal' => $ausenciasPersonal]);
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar el registro en la base de datos', ['exception' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $ausenciasPersonal = AusenciasPersonal::find($id);
-
-        return view('ausencias-personal.edit', compact('ausenciasPersonal'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  AusenciasPersonal $ausenciasPersonal
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, AusenciasPersonal $ausenciasPersonal)
-    {
-        request()->validate(AusenciasPersonal::$rules);
-
-        $ausenciasPersonal->update($request->all());
-
-        return redirect()->route('AusenciasPersonal.index')
-            ->with('success', 'AusenciasPersonal updated successfully');
-    }
-
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
     public function destroy($id)
     {
-        $ausenciasPersonal = AusenciasPersonal::find($id)->delete();
+        $asuenciasPersonal = AusenciasPersonal::find($id)->delete();
 
         return redirect()->route('AusenciasPersonal.index')
-            ->with('success', 'AusenciasPersonal deleted successfully');
+        ->with('success', 'AusenciasPersonal deleted successfully');   
     }
 }
