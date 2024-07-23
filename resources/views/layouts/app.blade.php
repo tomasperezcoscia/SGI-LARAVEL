@@ -70,6 +70,9 @@
                                 </li>
                             @endif
                         @else
+                            <a class="nav-link" href="{{ route('home') }}">
+                                <i class="fas fa-tachometer"></i> Dashboard
+                            </a>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="proveedoresDropdown" role="button" data-bs-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
@@ -96,22 +99,19 @@
                                     <a class="dropdown-item" href="{{ route('AusenciasPersonal.index') }}">
                                         <i class="fas fa-calendar-times"></i> Ausencias
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('Gasto.index') }}">
-                                        <i class="fas fa-money-bill"></i> Gastos
-                                    </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="obraDropdown" role="button" data-bs-toggle="dropdown"
+                                <a class="nav-link dropdown-toggle" href="#" id="horasDropdown" role="button" data-bs-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-building"></i> Obras
+                                    <i class="fas fa-clock"></i> Horas
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="obraDropdown">
+                                <div class="dropdown-menu" aria-labelledby="horasDropdown">
                                     <a class="dropdown-item" href="{{ route('HorasPersonal.index') }}">
                                         <i class="fas fa-clock"></i> Horas
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('TipoDeObra.index') }}">
-                                        <i class="fas fa-cogs"></i> Tipo De Obra
+                                    <a class="dropdown-item" href="{{ route('CargasSociales.index') }}">
+                                        <i class="fas fa-building"></i> CargasSociales
                                     </a>
                                 </div>
                             </li>
@@ -132,11 +132,14 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="presupuestoDropdown" role="button" data-bs-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-file-alt"></i> Presupuestos
+                                    <i class="fas fa-file-alt"></i> Gastos
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="presupuestoDropdown">
-                                    <a class="dropdown-item" href="{{ route('presupuestos.index') }}">
-                                        <i class="fas fa-file-alt"></i> Presupuestos
+                                    <a class="dropdown-item" href="{{ route('Energia.index') }}">
+                                        <i class="fas fa-bolt"></i> Energía
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('GastosBancarios.index') }}">
+                                        <i class="fas fa-university"></i> Gastos Bancarios
                                     </a>
                                 </div>
                             </li>

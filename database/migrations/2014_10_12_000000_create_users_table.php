@@ -20,6 +20,14 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::table('users')->insert(
+            array(
+                'name' => 'Administrador',
+                'email' => 'admin@basisconstrucciones.com.ar',
+                'password' => '$2y$12$NphoJlgA0jutNlU3OqJlpu4lmfo.gPKVvFU2xQkKrnFRLauYesPoC'
+            )
+        );
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 /**
  * Class Insumo
@@ -25,11 +26,13 @@ class Insumo extends Model
 {
     
     static $rules = [
+        'fecha' => 'required',
 		'nombre' => 'required',
 		'tipo' => 'required',
 		'precio' => 'required',
-		'inventario' => 'required',
         'proovedor_id' => 'required',
+        'orden_de_compra_id' => 'required',
+        'factura' => 'required'
     ];
 
     protected $perPage = 20;
@@ -38,16 +41,8 @@ class Insumo extends Model
      * Attributes that should be mass-assignable.
      *
      * @var array
-     */    protected $fillable = ['nombre','tipo','precio','inventario','proovedor_id'];
+     */    protected $fillable = ['fecha','nombre','tipo','precio','proovedor_id','orden_de_compra_id', 'factura'];
 
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function insumosParaObras()
-    {
-        return $this->hasMany('App\Models\InsumosParaObra', 'id_insumo', 'id');
-    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -56,6 +51,19 @@ class Insumo extends Model
     {
         return $this->hasOne('App\Models\Proovedore', 'id', 'proovedor_id');
     }
+    public function ordenDeCompra()
+    {
+        return $this->hasOne('App\Models\Proovedore', 'id', 'orden_de_compra_id');
+    }
     
+    public function getFormattedMonthYearAttribute()
+{
+    return Carbon::parse($this->fecha)->format('m/y');
+}
+
+public function getFormattedDayMonthYearAttribute()
+{
+    return Carbon::parse($this->fecha)->format('d/m/Y');
+}
 
 }

@@ -18,6 +18,22 @@ return new class extends Migration
             $table->string('tipo'); // Type of client
             $table->timestamps(); // Created_at and updated_at timestamps
         });
+
+        DB::table('clientes')->insert(
+            array(
+                'legajo' => 1,
+                'nombre' => 'Basis Construcciones S.R.L.',
+                'tipo' => 'Dueño'
+            )
+        );
+
+        DB::table('clientes')->insert(
+            array(
+                'legajo' => 2,
+                'nombre' => 'Cementos Avellaneda S.A.',
+                'tipo' => 'Cementera'
+            )
+        );
     }
 
     /**

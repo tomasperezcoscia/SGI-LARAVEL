@@ -15,9 +15,12 @@ class CreateHorasPersonalsTable extends Migration
     {
         Schema::create('horas_personals', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('fecha');
             $table->unsignedBigInteger('personal_id');
             $table->unsignedBigInteger('orden_de_compra_id');
             $table->unsignedFloat('cant_horas');
+            $table->unsignedFloat('precio_hora_a_fecha_de_carga');
+
             $table->timestamps();
 
             // Foreign key constraints

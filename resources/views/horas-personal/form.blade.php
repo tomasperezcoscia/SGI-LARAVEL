@@ -3,6 +3,11 @@
         @csrf
         <div class="box-body">
             <div class="form-group">
+                {{ Form::label('fecha', 'Fecha') }}
+                {{ Form::date('fecha', $horasPersonal->fecha ?? '', ['class' => 'form-control' . ($errors->has('fecha') ? ' is-invalid' : ''), 'placeholder' => 'Fecha']) }}
+                {!! $errors->first('fecha', '<div class="invalid-feedback">:message</div>') !!}
+            </div>
+            <div class="form-group">
                 {{ Form::label('personal_id', 'Personal') }}
                 {{ Form::select('personal_id', $personals->pluck('nombre', 'id'), null, ['class' => 'form-control select2', 'placeholder' => 'Personal', 'id' => 'personal_id']) }}
                 {!! $errors->first('personal_id', '<div class="invalid-feedback">:message</div>') !!}

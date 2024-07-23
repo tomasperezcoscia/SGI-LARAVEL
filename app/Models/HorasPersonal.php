@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 class HorasPersonal extends Model
 {
     static $rules = [
+        'fecha' => 'required',
         'personal_id' => 'required',
         'orden_de_compra_id' => 'required',
         'cant_horas' => 'required'
@@ -35,14 +36,14 @@ class HorasPersonal extends Model
      *
      * @var array
      */
-    protected $fillable = ['personal_id', 'orden_de_compra_id', 'cant_horas'];
+    protected $fillable = ['fecha','personal_id', 'orden_de_compra_id', 'cant_horas', 'precio_hora_a_fecha_de_carga'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function ordenDeCompra()
     {
-        return $this->belongsTo('App\Models\OrdenesDeCompra', 'orden_de_compra_id');
+        return $this->belongsTo(OrdenesDeCompra::class, 'orden_de_compra_id');
     }
 
     /**
@@ -50,7 +51,24 @@ class HorasPersonal extends Model
      */
     public function personal()
     {
-        return $this->belongsTo('App\Models\Personal', 'personal_id');
+        return $this->belongsTo(Personal::class, 'personal_id');
     }
 
+    public function getPrecioHoraAttribute()
+    {
+        return $this->cant_horas * $this->precio_hora_a_fecha_de_carga;
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        // Add event listener for creating event
+        static::creating(function ($horasPersonal) {
+            $personal = Personal::find($horasPersonal->personal_id);
+            if ($personal) {
+                $horasPersonal->precio_hora_a_fecha_de_carga = $personal->salario_hora;
+            }
+        });
+    }
 }

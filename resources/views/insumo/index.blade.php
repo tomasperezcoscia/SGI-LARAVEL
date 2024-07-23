@@ -40,24 +40,34 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
+                                        <th>Mes</th>
+                                        <th>Fecha</th>
+                                        <th>Proovedor</th>
+                                        <th>Factura N°</th>
+                                        <th>Pedido</th>
+                                        <th>Cliente</th>
+                                        <th>Orden de compra</th>
+                                        <th>Tipo de Obra</th>
                                         <th>Nombre</th>
                                         <th>Tipo de insumo</th>
                                         <th>Precio</th>
-                                        <th>Inventario</th>
-                                        <th>Ultima fecha precio</th>
-                                        <th>Proovedor</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($insumos as $insumo)
                                         <tr>
+                                            <td>{{ $insumo->formatted_month_year }}</td>
+                                            <td>{{ $insumo->formatted_day_month_year }}</td>
+                                            <td>{{ ($proovedores->firstWhere('id', $insumo->proovedor_id)->nombre) }}</td>
+                                            <td>{{ $insumo->factura }}</td>
+                                            <td>{{ ($ordenesDeCompra->firstWhere('id', $insumo->orden_de_compra_id)->numeroOrdenInterna) }}</td>
+                                            <td>{{ ($clientes->firstWhere('id', ($ordenesDeCompra->firstWhere('id', $insumo->orden_de_compra_id)->cliente_id))->nombre) }}</td>
+                                            <td>{{ ($ordenesDeCompra->firstWhere('id', $insumo->orden_de_compra_id)->numeroOrden) }}</td>
+                                            <td>{{ ($ordenesDeCompra->firstWhere('id', $insumo->orden_de_compra_id)->descripcionTarea) }}</td>
                                             <td>{{ $insumo->nombre }}</td>
                                             <td>{{ $insumo->tipo }}</td>
                                             <td>{{ $insumo->precio }}</td>
-                                            <td>{{ $insumo->inventario }}</td>
-                                            <td>{{ $insumo->updated_at->subHours(3) }}</td>
-                                            <td>{{ ($proovedores->firstWhere('id', $insumo->proovedor_id)->nombre) }}</td>
                                             <td>
                                                 <form action="{{ route('Insumo.destroy', $insumo->id) }}" method="POST">
                                                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ModalShow{{ $insumo->id }}">
@@ -82,6 +92,21 @@
                                                         <div class="modal-body">
                                                             <!-- Include the form fields here -->
                                                             <div class="form-group">
+                                                                {{ Form::label('fecha', 'Fecha') }}
+                                                                {{ Form::date('fecha', $insumo->fecha, ['class' => 'form-control' . ($errors->has('fecha') ? ' is-invalid' : ''), 'placeholder' => 'Fecha']) }}
+                                                                {!! $errors->first('fecha', '<div class="invalid-feedback">:message</div>') !!}
+                                                            </div>
+                                                            <div class="form-group">
+                                                                {{ Form::label('proovedor_id', 'Proveedor') }}
+                                                                {{ Form::select('proovedor_id', $proovedores->pluck('nombre', 'id'), $insumo->proovedor_id, ['class' => 'form-control select2' . ($errors->has('proovedor_id') ? ' is-invalid' : ''), 'placeholder' => 'Seleccionar proveedor de insumo', 'data-allow-clear' => 'true']) }}
+                                                                {!! $errors->first('proovedor_id', '<div class="invalid-feedback">:message</div>') !!}
+                                                            </div>
+                                                            <div class="form-group">
+                                                                {{ Form::label('factura', 'Numero de factura') }}
+                                                                {{ Form::text('factura', $insumo->factura, ['class' => 'form-control' . ($errors->has('factura') ? ' is-invalid' : ''), 'placeholder' => 'Numero de factura']) }}
+                                                                {!! $errors->first('factura', '<div class="invalid-feedback">:message</div>') !!}
+                                                            </div>
+                                                            <div class="form-group">
                                                                 {{ Form::label('nombre', 'Nombre de insumo') }}
                                                                 {{ Form::text('nombre', $insumo->nombre, ['class' => 'form-control' . ($errors->has('nombre') ? ' is-invalid' : ''), 'placeholder' => 'Nombre']) }}
                                                                 {!! $errors->first('nombre', '<div class="invalid-feedback">:message</div>') !!}
@@ -97,14 +122,16 @@
                                                                 {!! $errors->first('precio', '<div class="invalid-feedback">:message</div>') !!}
                                                             </div>
                                                             <div class="form-group">
-                                                                {{ Form::label('inventario', 'Inventario') }}
-                                                                {{ Form::text('inventario', $insumo->inventario, ['class' => 'form-control' . ($errors->has('inventario') ? ' is-invalid' : ''), 'placeholder' => 'Inventario']) }}
-                                                                {!! $errors->first('inventario', '<div class="invalid-feedback">:message</div>') !!}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                {{ Form::label('proovedor_id', 'Proveedor de insumo') }}
-                                                                {{ Form::select('proovedor_id', $proovedores->pluck('nombre', 'id'), $insumo->proovedor_id, ['class' => 'form-control select2' . ($errors->has('proovedor_id') ? ' is-invalid' : ''), 'placeholder' => 'Seleccionar proveedor de insumo', 'data-allow-clear' => 'true']) }}
-                                                                {!! $errors->first('proovedor_id', '<div class="invalid-feedback">:message</div>') !!}
+                                                                {{ Form::label('orden_de_compra_id', 'Orden de compra') }}
+                                                                <select id="orden_de_compra_id" name="orden_de_compra_id" class="form-control select2" placeholder="Numero de orden interna">
+                                                                    <option value="">Numero de orden interna</option>
+                                                                    @foreach ($ordenesDeCompra as $orden)
+                                                                        <option value="{{ $orden->id }}">
+                                                                            Int: {{ $orden->numeroOrdenInterna }} | Ext: {{ $orden->numeroOrden }} | {{ $clientes->firstWhere('id', $orden->cliente_id)->nombre }} | {{ $orden->descripcionTarea }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                {!! $errors->first('orden_de_compra_id', '<div class="invalid-feedback">:message</div>') !!}
                                                             </div>
                                                             <input type="hidden" name="id" value="{{ $insumo->id }}">
                                                         </div>
@@ -125,28 +152,48 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            <strong>Nombre de insumo:</strong>
+                                                            <strong>Mes:</strong>
+                                                            {{ $insumo->formatted_month_year }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Fecha:</strong>
+                                                            {{ $insumo->formatted_day_month_year }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Proovedor:</strong>
+                                                            {{ ($proovedores->firstWhere('id', $insumo->proovedor_id)->nombre) }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Factura N°:</strong>
+                                                            {{ $insumo->factura }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Pedido:</strong>
+                                                            {{ ($ordenesDeCompra->firstWhere('id', $insumo->orden_de_compra_id)->numeroOrdenInterna) }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Cliente:</strong>
+                                                            {{ ($clientes->firstWhere('id', ($ordenesDeCompra->firstWhere('id', $insumo->orden_de_compra_id)->cliente_id))->nombre) }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Orden:</strong>
+                                                            {{ ($ordenesDeCompra->firstWhere('id', $insumo->orden_de_compra_id)->numeroOrden) }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Tarea:</strong>
+                                                            {{ ($ordenesDeCompra->firstWhere('id', $insumo->orden_de_compra_id)->descripcionTarea) }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Nombre:</strong>
                                                             {{ $insumo->nombre }}
                                                         </div>
                                                         <div class="form-group">
-                                                            <strong>Tipo de insumo:</strong>
+                                                            <strong>Tipo:</strong>
                                                             {{ $insumo->tipo }}
                                                         </div>
                                                         <div class="form-group">
                                                             <strong>Precio:</strong>
                                                             {{ $insumo->precio }}
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <strong>Inventario:</strong>
-                                                            {{ $insumo->inventario }}
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <strong>Ultima fecha precio:</strong>
-                                                            {{ $insumo->updated_at->subHours(3) }}
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <strong>Proovedor:</strong>
-                                                            {{ ($proovedores->firstWhere('id', $insumo->proovedor_id)->nombre) }}
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -167,7 +214,7 @@
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-header">
-                        <span id="form_title">{{ __('Agregar Insumo') }}</span>
+                        <span id="form_title">{{ __('Agregar insumo / gasto') }}</span>
                     </div>
                     <div class="card-body">
                         @include('insumo.form', ['insumo' => new \App\Models\Insumo()])

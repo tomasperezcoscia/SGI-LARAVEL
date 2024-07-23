@@ -17,6 +17,7 @@
     "dependencies": {
         "jquery": "^3.7.1",
         "jquery-ui": "^1.13.2",
-        "jquery-ui-dist": "^1.13.2"
+        "jquery-ui-dist": "^1.13.2",
+        "puppeteer": "^22.11.0"
     }
 }

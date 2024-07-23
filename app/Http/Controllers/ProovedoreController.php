@@ -107,24 +107,13 @@ class ProovedoreController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validar los datos
-        request()->validate(Proovedore::$rules);
+        $proovedor = Proovedore::findOrFail($id);
+        $proovedor->update($request->all());
 
-        // Buscar el registro
-        $proovedore = Proovedore::find($id);
-
-        if (!$proovedore) {
-            return response()->json(['success' => false, 'message' => 'El registro no existe en la base de datos']);
-        }
-
-        // Intentar actualizar el registro
-        $updated = $proovedore->update($request->all());
-
-        if ($updated) {
-            return response()->json(['success' => true, 'proovedore' => $proovedore]);
-        } else {
-            return response()->json(['success' => false, 'message' => 'No se pudo actualizar el registro']);
-        }
+        return response()->json([
+            'success' => true,
+            'proovedor' => $proovedor
+        ]);
     }
 
     /**

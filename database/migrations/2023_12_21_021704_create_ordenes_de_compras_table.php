@@ -15,11 +15,12 @@ class CreateOrdenesDeComprasTable extends Migration
     {
         Schema::create('ordenes_de_compras', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('fecha');
             $table->integer('numeroOrdenInterna')->unique();
             $table->unsignedBigInteger('cliente_id');
-            $table->integer('numeroOrden');
+            $table->bigInteger('numeroOrden');
             $table->string('descripcionTarea')->nullable();
-            $table->float('valorTarea')->nullable();
+            $table->double('valorTarea')->nullable();
             $table->timestamps();
 
             // Foreign key constraints

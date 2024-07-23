@@ -16,23 +16,27 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('User', App\Http\Controllers\UserController::class);
 Route::resource('Cliente', App\Http\Controllers\ClienteController::class);
+Route::resource('CargasSociales', App\Http\Controllers\CargasSocialesController::class);
+Route::resource('Energia', App\Http\Controllers\EnergiaController::class);
+Route::resource('GastosBancarios', App\Http\Controllers\GastosBancariosController::class);
 Route::resource('AusenciasPersonal', App\Http\Controllers\AusenciasPersonalController::class);
 Route::resource('Gasto', App\Http\Controllers\GastoController::class);
 Route::resource('HorasPersonal', App\Http\Controllers\HorasPersonalController::class);
 Route::resource('Insumo', App\Http\Controllers\InsumoController::class);
-Route::resource('InsumosParaObra', App\Http\Controllers\InsumosParaObraController::class);
 Route::resource('OrdenesDeCompra', App\Http\Controllers\OrdenesDeCompraController::class);
 Route::resource('Personal', App\Http\Controllers\PersonalController::class);
 Route::resource('Proovedore', App\Http\Controllers\ProovedoreController::class);
-Route::resource('Tarea', App\Http\Controllers\TareaController::class);
-Route::resource('TipoDeObra', App\Http\Controllers\TipoDeObraController::class);
-Route::resource('presupuestos', PresupuestoController::class);
-Route::resource('obras', ObraController::class)->except(['index']);
 
-Route::get('obras/create/{presupuesto_id}', [ObraController::class, 'create'])->name('obras.create');
-Route::get('/insumos/list', [InsumoController::class, 'list'])->name('insumos.list');
-Route::get('/presupuestos/{id}/compare', [PresupuestoController::class, 'compare'])->name('presupuestos.compare');
+Route::get('/gastos-bancarios/month/{mesAnio}', [App\Http\Controllers\GastosBancariosController::class, 'getGastosBancariosFromMonth'])->name('gastos-bancarios.month');
+Route::get('/energia/month/{mesAnio}', [App\Http\Controllers\EnergiaController::class, 'getEnergiaFromMonth'])->name('energia.month');
+Route::get('/horas-personal/month/{mesAnio}', [App\Http\Controllers\HorasPersonalController::class, 'getHorasPersonalFromMonth'])->name('horas-personal.month');
+Route::get('/order-details/{id}', [App\Http\Controllers\HomeController::class, 'getOrderDetails'])->name('order-details');
+Route::get('/consolidated-data/month/{mesAnio}', [App\Http\Controllers\HomeController::class, 'getConsolidatedDataFromMonth'])->name('consolidated-data.month');
 
-
-// Custom route for partialStore method
-Route::post('/HorasPersonal/partialStore', [HorasPersonalController::class, 'partialStore'])->name('HorasPersonal.partialStore');
+Route::middleware(['auth', 'web'])->group(function () {
+    Route::get('/gastos-bancarios/month/{mesAnio}', [App\Http\Controllers\GastosBancariosController::class, 'getGastosBancariosFromMonth'])->name('gastos-bancarios.month');
+    Route::get('/energia/month/{mesAnio}', [App\Http\Controllers\EnergiaController::class, 'getEnergiaFromMonth'])->name('energia.month');
+    Route::get('/horas-personal/month/{mesAnio}', [App\Http\Controllers\HorasPersonalController::class, 'getHorasPersonalFromMonth'])->name('horas-personal.month');
+    Route::get('/order-details/{id}', [App\Http\Controllers\HomeController::class, 'getOrderDetails'])->name('order-details');
+    Route::get('/consolidated-data/month/{mesAnio}', [App\Http\Controllers\HomeController::class, 'getConsolidatedDataFromMonth'])->name('consolidated-data.month');
+});

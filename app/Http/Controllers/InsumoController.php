@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Insumo;
+use App\Models\OrdenesDeCompra;
 use App\Models\Proovedore;
+use App\Models\Cliente;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ class InsumoController extends Controller
 
     // Filtro de fechas
     if ($request->filled('from_date') && $request->filled('to_date')) {
-        $query->whereBetween('updated_at', [$request->input('from_date'), $request->input('to_date')]);
+        $query->whereBetween('fecha', [$request->input('from_date'), $request->input('to_date')]);
     }
 
     // Búsqueda unificada
@@ -36,15 +38,16 @@ class InsumoController extends Controller
         $query->where(function($q) use ($search) {
             $q->where('nombre', 'like', '%' . $search . '%')
               ->orWhere('tipo', 'like', '%' . $search . '%')
-              ->orWhere('precio', 'like', '%' . $search . '%')
-              ->orWhere('inventario', 'like', '%' . $search . '%');
+              ->orWhere('precio', 'like', '%' . $search . '%');
         });
     }
 
     $insumos = $query->paginate(10);
     $proovedores = Proovedore::all();
+    $ordenesDeCompra = OrdenesDeCompra::all();
+    $clientes = Cliente::all();
 
-    return view('insumo.index', compact('insumos', 'proovedores'))
+    return view('insumo.index', compact('insumos', 'proovedores', 'ordenesDeCompra', 'clientes'))
         ->with('i', (request()->input('page', 1) - 1) * $insumos->perPage());
 }
 
@@ -53,7 +56,9 @@ class InsumoController extends Controller
     {
         $insumo = new Insumo();
         $proovedores = Proovedore::all();
-        return view('insumo.create', compact('insumo', 'proovedores'));
+        $ordenesDeCompra = OrdenesDeCompra::all();
+        $clientes = Cliente::all();
+        return view('insumo.create', compact('insumo', 'proovedores', 'ordenesDeCompra', 'clientes'));
     }
 
     public function store(Request $request)
@@ -79,6 +84,8 @@ class InsumoController extends Controller
     {
         $insumo = Insumo::find($id);
         $proovedores = Proovedore::all();
+        $ordenesDeCompra =OrdenesDeCompra::all();
+
         return view('insumo.edit', compact('insumo', 'proovedores'));
     }
 

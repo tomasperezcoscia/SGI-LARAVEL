@@ -3,6 +3,11 @@
         @csrf
         <div class="box-body">
             <div class="form-group">
+                {{ Form::label('fecha', 'Fecha') }}
+                {{ Form::date('fecha', $ordenesDeCompra->fecha ?? '', ['class' => 'form-control' . ($errors->has('fecha') ? ' is-invalid' : ''), 'placeholder' => 'Fecha']) }}
+                {!! $errors->first('fecha', '<div class="invalid-feedback">:message</div>') !!}
+            </div>
+            <div class="form-group">
                 {{ Form::label('numeroOrdenInterna', 'Numero de orden interna') }}
                 {{ Form::text('numeroOrdenInterna', $ordenesDeCompra->numeroOrdenInterna ?? '', ['class' => 'form-control' . ($errors->has('numeroOrdenInterna') ? ' is-invalid' : ''), 'placeholder' => 'Numero de orden interna']) }}
                 {!! $errors->first('numeroOrdenInterna', '<div class="invalid-feedback">:message</div>') !!}

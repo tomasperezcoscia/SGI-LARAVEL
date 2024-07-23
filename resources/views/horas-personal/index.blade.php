@@ -60,18 +60,20 @@
                                         <th>Orden de compra (Interna)</th>
                                         <th>Tarea</th>
                                         <th>Cantidad de Horas</th>
+                                        <th>Precio hora a la fecha</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($horasPersonals as $horasPersonal)
                                         <tr>
-                                            <td>{{ $horasPersonal->created_at->subHours(3) }}</td>
+                                            <td>{{ $horasPersonal->fecha }}</td>
                                             <td>{{ $clientes->firstWhere('id', $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->cliente_id)->nombre }}</td>
                                             <td>{{ $personals->firstWhere('id', $horasPersonal->personal_id)->nombre }}</td>
                                             <td>{{ $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->numeroOrdenInterna }}</td>
                                             <td>{{ $ordenesDeCompras->firstWhere('id', $horasPersonal->orden_de_compra_id)->descripcionTarea }}</td>
                                             <td>{{ formatHours($horasPersonal->cant_horas) }}</td>
+                                            <td>$ {{ $horasPersonal->precio_hora_a_fecha_de_carga}}</td>
                                             <td>
                                                 <form action="{{ route('HorasPersonal.destroy', $horasPersonal->id) }}" method="POST">
                                                     <!-- Modal Trigger Buttons -->
@@ -99,6 +101,11 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    {{ Form::label('fecha', 'Fecha') }}
+                                                                    {{ Form::date('fecha', $horasPersonal->fecha ?? '', ['class' => 'form-control' . ($errors->has('fecha') ? ' is-invalid' : ''), 'placeholder' => 'Fecha']) }}
+                                                                    {!! $errors->first('fecha', '<div class="invalid-feedback">:message</div>') !!}
+                                                                </div>
                                                                 <div class="form-group">
                                                                     {{ Form::label('personal_id', 'Personal') }}
                                                                     <select name="personal_id" class="form-control">
@@ -168,6 +175,14 @@
                                                             <strong>Cantidad de Horas:</strong>
                                                             {{ formatHours($horasPersonal->cant_horas) }}
                                                         </div>
+                                                        <div class="form-group">
+                                                            <strong>Precio de la hora a la fecha de carga:</strong>
+                                                            $ {{ $horasPersonal->precio_hora_a_fecha_de_carga }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <strong>Precio subtotal de horas:</strong>
+                                                            $ {{ $horasPersonal->precio_hora_a_fecha_de_carga * ($horasPersonal->cant_horas)}}
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
@@ -199,49 +214,50 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const forms = document.querySelectorAll('form[id^="editForm"]');
+        
+            function attachEventListeners(form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent the default form submission
+                    console.log(`Form submitted ${form.id}`);
+        
+                    const formData = new FormData(form);
+        
+                    for (const [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+        
+                    fetch(form.action, {
+                        method: form.method,
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    }).then(response => response.json())
+                      .then(data => {
+                          if (data.success) {
+                              console.log('Form submission successful');
+                              window.location.href = "{{ route('HorasPersonal.index') }}"; // Redirigir al índice después de una edición exitosa
+                          } else {
+                              console.error('Form submission failed', data);
+                          }
+                      }).catch(error => {
+                          console.error('Form submission error:', error);
+                      });
+                });
+            }
+        
+            forms.forEach(form => {
+                attachEventListeners(form);
+            });
+        });
+        
+        </script>
 @endsection
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const forms = document.querySelectorAll('form[id^="editForm"]');
 
-    function attachEventListeners(form) {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            console.log(`Form submitted ${form.id}`);
-
-            const formData = new FormData(form);
-
-            for (const [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
-
-            fetch(form.action, {
-                method: form.method,
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      console.log('Form submission successful');
-                      window.location.href = "{{ route('HorasPersonal.index') }}"; // Redirigir al índice después de una edición exitosa
-                  } else {
-                      console.error('Form submission failed', data);
-                  }
-              }).catch(error => {
-                  console.error('Form submission error:', error);
-              });
-        });
-    }
-
-    forms.forEach(form => {
-        attachEventListeners(form);
-    });
-});
-
-</script>
 
 @php
 function formatHours($decimalHours) {

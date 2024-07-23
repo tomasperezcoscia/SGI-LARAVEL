@@ -13,6 +13,8 @@ use App\Models\Tarea;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Carbon\Carbon;
+
 
 /**
  * Class HorasPersonalController
@@ -211,5 +213,45 @@ class HorasPersonalController extends Controller
 
         return redirect()->route('HorasPersonal.index')
             ->with('success', 'HorasPersonal deleted successfully');
+    }
+
+    public function getHorasPersonalFromMonth($mesAnio)
+    {
+        try {
+            // Convertir mesAnio a un objeto Carbon
+            $date = Carbon::createFromFormat('m-Y', $mesAnio);
+    
+            // Obtener el primer y último día del mes
+            $startOfMonth = $date->copy()->startOfMonth();
+            $endOfMonth = $date->copy()->endOfMonth();
+    
+            // Obtener los registros de horas personal del mes
+            $horasPersonal = HorasPersonal::whereBetween('fecha', [$startOfMonth, $endOfMonth])->get();
+    
+            // Obtener los registros de horas personal del mes con personal.estado = 'A'
+            $horasPersonalEnBlanco = HorasPersonal::whereBetween('fecha', [$startOfMonth, $endOfMonth])
+                ->whereHas('personal', function($query) {
+                    $query->where('estado', 'A');
+                })
+                ->get();
+    
+            // Calcular el total de horas
+            $totalHoras = $horasPersonal->sum('cant_horas');
+            $totalHorasEnBlanco = $horasPersonalEnBlanco->sum('cant_horas');
+    
+            return response()->json([
+                'success' => true,
+                'horasPersonal' => $horasPersonal,
+                'horasPersonalEnBlanco' => $horasPersonalEnBlanco,
+                'totalHoras' => $totalHoras,
+                'totalHorasEnBlanco' => $totalHorasEnBlanco
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener los registros de horas personal',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

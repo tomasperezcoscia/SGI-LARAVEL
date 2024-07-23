@@ -15,12 +15,14 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Cliente $cliente
  * @property HorasPersonal[] $horasPersonals
+ * @property Insumo[] $insumos
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class OrdenesDeCompra extends Model
 {
     static $rules = [
+        'fecha' => 'required',
         'numeroOrdenInterna' => 'required',
         'cliente_id' => 'required',
         'numeroOrden' => 'required',
@@ -35,7 +37,7 @@ class OrdenesDeCompra extends Model
      *
      * @var array
      */
-    protected $fillable = ['numeroOrdenInterna', 'cliente_id', 'numeroOrden', 'descripcionTarea', 'valorTarea'];
+    protected $fillable = ['fecha','numeroOrdenInterna', 'cliente_id', 'numeroOrden', 'descripcionTarea', 'valorTarea'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -45,20 +47,26 @@ class OrdenesDeCompra extends Model
         return $this->belongsTo(Cliente::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function horasPersonals()
     {
-        return $this->hasMany('App\Models\HorasPersonal', 'orden_de_compra_id', 'id');
+        return $this->hasMany(HorasPersonal::class, 'orden_de_compra_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function presupuestos()
+    public function insumos()
     {
-        return $this->hasMany('App\Models\Presupuesto', 'orden_de_compra_id', 'id');
+        return $this->hasMany(Insumo::class, 'orden_de_compra_id');
     }
+
+    public function getCantidadHorasAttribute()
+    {
+        $this->loadMissing('horasPersonals');
+        return $this->horasPersonals->sum('cant_horas');
+    }
+
 }
